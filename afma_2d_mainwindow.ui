@@ -98,6 +98,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="psBtn_UndoLastPoint">
+       <property name="text">
+        <string>Undo Last Point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QSlider" name="sld_Scale">
        <property name="maximum">
         <number>100</number>

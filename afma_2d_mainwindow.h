@@ -36,15 +36,28 @@ public:
     double m_scale = 1.0;
     int m_initial_Slider_position = 50;
     std::vector<QPointF> vec_points;
+    std::vector<QPointF> new_vec_points;
+
 
 
 
 private slots:
 
+    void drawAnnotation(std::vector<QPointF> pts);
+
+    void debugMessage(QString str);
+
+    void updateAnnotation();
+
+    void updateAnnotation(std::vector<QPointF> pts);
+
+    void clearAnnotation();
+
     void on_psBtn_Load_clicked();
 
     void on_psBtn_SetPixel_clicked();
 
+    void setDisplayImage(cv::Mat newImage, std::vector<QPointF> annotation_points);
     void setDisplayImage(cv::Mat newImage);
 
     void on_psButton_Initial_Image_clicked();
@@ -59,6 +72,13 @@ private slots:
     void on_psBtn_LoadProject_clicked();
 
     void on_psBtn_ClearAnnotation_clicked();
+
+
+    void on_sld_Scale_sliderReleased();
+
+    void on_psBtn_UndoLastPoint_clicked();
+
+    void on_sld_Scale_sliderPressed();
 
 private:
     Ui::AFMA_2D_MainWindow *ui;
