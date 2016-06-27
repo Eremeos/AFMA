@@ -133,7 +133,7 @@ void AFMA_2D_MainWindow::setDisplayImage(cv::Mat newImage)
     m_scene->setSceneRect(p_Image.rect());
     ui->graphicsView->setScene(m_scene);
     newImage.copyTo(m_displayed_Image);
-    drawAnnotation(vec_points);
+    drawAnnotation(new_vec_points);
 }
 
 void AFMA_2D_MainWindow::on_psButton_Initial_Image_clicked()
@@ -377,3 +377,5 @@ void AFMA_2D_MainWindow::on_sld_Scale_sliderPressed()
     updateAnnotation();
     setDisplayImage(m_displayed_Image, new_vec_points);
 }
+
+

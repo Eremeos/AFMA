@@ -20,7 +20,7 @@ SOURCES += main.cpp\
     facecomponent2d.cpp \
     facemodel2d.cpp \
     afma_2d_imagedisplay.cpp \
-    grid2d.cpp
+    openglwindow.cpp
 
 HEADERS  += afma_mainwindow.h \
     afma_2d_mainwindow.h \
@@ -29,15 +29,18 @@ HEADERS  += afma_mainwindow.h \
     facecomponent2d.h \
     facemodel2d.h \
     afma_2d_imagedisplay.h \
-    grid2d.h
+    openglwindow.h
 
 FORMS    += afma_mainwindow.ui \
     afma_2d_mainwindow.ui \
     afma_3d_mainwindow.ui
 
-INCLUDEPATH += D:\\Programme\\opencv\\mybuild\\install\\include
+INCLUDEPATH += D:\\Programme\\opencv\\mybuild\\install\\include \
+D:\\Programme\\glew-1.13.0\\include
 
-LIBS += -LD:\\Programme\\opencv\\mybuild\\lib\\Debug \
+LIBS += -LD:\Qt\5.5\mingw492_32\lib\libQt5OpenGL.a -lopengl32\
+-LD:\\Programme\\glew-1.13.0\\lib\\Release\\Win32 lglew32\
+-LD:\\Programme\\opencv\\mybuild\\lib\\Debug \
 -lopencv_videostab310d \
 -lopencv_stitching310d \
 -lopencv_calib3d310d \
@@ -54,7 +57,7 @@ LIBS += -LD:\\Programme\\opencv\\mybuild\\lib\\Debug \
 -lopencv_imgproc310d \
 -lopencv_flann310d \
 -lopencv_ml310d \
--lopencv_core310d
+-lopencv_core310d 
 
 DISTFILES += \
     haarcascades/haarcascade_eye.xml \
