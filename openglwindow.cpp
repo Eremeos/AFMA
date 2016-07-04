@@ -1,7 +1,10 @@
 #include "openglwindow.h"
-#include <gl/glew.h>
 #include <QOpenGLWidget>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <stdio.h>
+#include <fstream>
+
 
 
 
@@ -19,135 +22,326 @@ void OpenGLWindow::initializeGL()
 
     glClearColor(0,0,0,1);
     glEnable(GL_DEPTH_TEST);
-
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(4);
     glIsEnabled(true);
 
+    programID = LoadShaders( "..\\AFMA\\vertexshader.vert", "..\\AFMA\\fragmentshader.frag" );
+    glUseProgram(programID);
 
-GLdouble   vertices   []      =
-        {
-            0.000000    ,1.061000    ,-0.371000
-            ,0.174000    ,0.800000    ,-0.024000
-            ,0.000000    ,0.539000    ,0.085000
-            ,0.000000    ,0.278000    ,0.107000
-            ,0.000000    ,0.213000    ,0.085000
-            ,0.000000    ,-0.222000   ,0.210000
-            ,0.000000    ,-0.265000   ,0.124000
-            ,0.000000    ,-0.417000   ,0.142000
-            ,0.000000    ,-0.526000   ,0.150000
-            ,0.000000    ,-0.591000   ,0.107000
-            ,0.000000    ,-0.852000   ,0.063000
-            ,0.217000    ,1.039000    ,-0.371000
-            ,0.457000    ,0.909000    ,-0.328000
-            ,0.435000    ,0.626000    ,-0.111000
-            ,0.610000    ,0.539000    ,-0.328000
-            ,0.522000    ,0.278000    ,-0.111000
-            ,0.391000    ,0.374000    ,0.0300000
-            ,0.130000    ,0.278000    ,0.107000
-            ,0.391000    ,0.322000    ,0.0300000
-            ,0.304000    ,0.225000    ,-0.002000
-            ,0.470000    ,0.148000    ,-0.111000
-            ,0.304000    ,0.204000    ,-0.000000
-            ,0.304000    ,0.122000    ,-0.000000
-            ,0.130000    ,0.148000    ,-0.000000
-            ,0.304000    ,0.104000    ,-0.000000
-            ,0.109000    ,-0.157000   ,0.037000
-            ,0.174000    ,-0.244000   ,0.037000
-            ,0.387000    ,-0.100000   ,-0.045000
-            ,0.550000    ,-0.250000   ,-0.328000
-            ,0.609000    ,0.148000    ,-0.328000
-            ,0.470000    ,-0.600000   ,-0.328000
-            ,0.246000    ,-0.461000   ,-0.000000
-            ,0.174000    ,-0.809000   ,0.000000
-            ,0.043000    ,-0.396000   ,0.150000
-            ,-0.174000   ,0.800000    ,-0.024000
-            ,0.000000    ,0.539000    ,0.085000
-            ,0.000000    ,0.278000    ,0.107000
-            ,0.000000    ,0.213000    ,0.085000
-            ,0.000000    ,-0.222000   ,0.210000
-            ,0.000000    ,-0.265000   ,0.124000
-            ,0.000000    ,-0.461000   ,0.124000
-            ,0.000000    ,-0.526000   ,0.150000
-            ,0.000000    ,-0.591000   ,0.107000
-            ,0.000000    ,-0.852000   ,0.063000
-            ,-0.217000   ,1.039000    ,-0.371000
-            ,-0.457000   ,0.909000    ,-0.328000
-            ,-0.435000   ,0.626000    ,-0.111000
-            ,-0.610000   ,0.539000    ,-0.328000
-            ,-0.522000   ,0.278000    ,-0.111000
-            ,-0.391000   ,0.374000    ,0.030000
-            ,-0.130000   ,0.278000    ,0.107000
-            ,-0.391000   ,0.322000    ,0.030000
-            ,-0.304000   ,0.225000    ,-0.002000
-            ,-0.470000   ,0.148000    ,-0.111000
-            ,-0.304000   ,0.204000    ,-0.000000
-            ,-0.304000   ,0.122000    ,-0.000000
-            ,-0.130000   ,0.148000    ,-0.000000
-            ,-0.304000   ,0.104000    ,-0.000000
-            ,-0.109000   ,-0.157000   ,0.037000
-            ,-0.174000   ,-0.244000   ,0.037000
-            ,-0.387000   ,-0.100000   ,-0.045000
-            ,-0.550000   ,-0.250000   ,-0.328000
-            ,-0.609000   ,0.148000    ,-0.328000
-            ,-0.470000   ,-0.600000   ,-0.328000
-            ,-0.246000   ,-0.461000   ,-0.000000
-            ,-0.174000   ,-0.809000   ,0.000000
-            ,-0.043000   ,-0.396000   ,0.150000
-            ,0.348000    ,0.200000    ,-0.0300000
-            ,0.348000    ,0.115000    ,-0.0300000
-            ,-0.348000   ,0.200000    ,-0.0300000
-            ,-0.348000   ,0.115000    ,-0.0300000
-            ,0.265000    ,0.200000    ,-0.0300000
-            ,0.265000    ,0.115000    ,-0.0300000
-            ,-0.265000   ,0.200000    ,-0.0300000
-            ,-0.265000   ,0.115000    ,-0.0300000
-            ,0.080000    ,-0.220000   ,0.150000
-            ,-0.080000   ,-0.220000   ,0.150000
-            ,0.022000    ,0.213000    ,0.063000
-            ,-0.022000   ,0.213000    ,0.063000
-            ,0.123000    ,-0.410000   ,0.063000
-            ,-0.123000   ,-0.410000   ,0.063000
-            ,0.100000    ,-0.461000   ,0.050000
-            ,-0.100000   ,-0.461000   ,0.050000
-            ,0.100000    ,-0.461000   ,0.050000
-            ,-0.100000   ,-0.461000   ,0.050000
-            ,0.123000    ,-0.508000   ,0.063000
-            ,-0.123000   ,-0.508000   ,0.063000
-            ,0.000000    ,-0.461000   ,0.124000
-            ,0.200000    ,-0.461000   ,-0.024000
-            ,-0.200000   ,-0.461000   ,-0.024000
-            ,0.357000    ,-0.461000   ,-0.050000
-            ,-0.357000   ,-0.461000   ,-0.050000
-            ,0.065000    ,0.028000    ,0.050000
-            ,-0.065000   ,0.028000    ,0.050000
-            ,0.000000    ,0.068000    ,0.100000
-            ,0.387000    ,0.201000    ,-0.056000
-            ,-0.387000   ,0.201000    ,-0.056000
-            ,0.387000    ,0.186000    ,-0.056000
-            ,-0.387000   ,0.186000    ,-0.056000
-            ,0.387000    ,0.126000    ,-0.056000
-            ,-0.387000   ,0.126000    ,-0.056000
-            ,0.387000    ,0.117000    ,-0.067000
-            ,-0.387000   ,0.117000    ,-0.067000
-            ,0.217000    ,0.201000    ,-0.013000
-            ,-0.217000   ,0.201000    ,-0.013000
-            ,0.217000    ,0.186000    ,-0.013000
-            ,-0.217000   ,0.186000    ,-0.013000
-            ,0.217000    ,0.126000    ,-0.013000
-            ,-0.217000   ,0.126000    ,-0.013000
-            ,0.217000    ,0.117000    ,-0.024000
-            ,-0.217000   ,0.117000    ,-0.024000
-            ,0.120000    ,-0.265000   ,0.100000
-            ,-0.120000   ,-0.265000   ,0.100000
-        };
+    initializeVertices();
+    initializeColor();
+    initializeIndices();
 
 
-GLuint myBufferID;
-    glGenBuffers(1, &myBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, myBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,3, GL_DOUBLE, GL_FALSE, 0,0);
 
+
+
+
+
+
+
+
+}
+
+void OpenGLWindow::paintGL()
+{
+    if(bdraw ==true)
+    {
+        glGenBuffers(1, &myBufferID);
+        glBindBuffer(GL_ARRAY_BUFFER, myBufferID);
+        glVertexPointer(3, GL_FLOAT, 0, 0);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*numberOfVertices, &vec_vertices[0], GL_DYNAMIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
+
+        glGenBuffers(1, &colorbuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+        glColorPointer(3, GL_FLOAT, 0, 0);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*numberOfVertices, &vec_color[0], GL_DYNAMIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(
+            1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+            3,                                // size
+            GL_FLOAT,                         // type
+            GL_FALSE,                         // normalized?
+            0,                                // stride
+            (void*)0                          // array buffer offset
+        );
+
+
+
+
+
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+glPolygonMode(GL_FRONT_AND_BACK,GL_POINTS);
+
+glDrawArrays(GL_POINTS, 0, numberOfVertices);
+//glDrawElements(GL_TRIANGLES, numberOfIndices, GL_UNSIGNED_INT, 0);
+    }
+
+
+
+
+
+
+
+
+
+}
+
+void OpenGLWindow::resizeGL(int w, int h)
+{
+   glViewport(0, 0, w, h);
+}
+
+void OpenGLWindow::draw()
+{
+ bdraw = true;
+ update();
+}
+
+void OpenGLWindow::next()
+{
+if(count < vec_vertices.size())
+{
+  /*  for(int i = 0; i < vec_color.size(); ++i)
+    {
+        if (i > count)
+        vec_color[i] = glm::vec3(0,0,0);
+
+
+    } */
+
+    vec_color[count] = glm::vec3(1,1,1);
+++count;
+    vec_color[count] = glm::vec3(1,0,0);
+    update();
+}
+}
+
+
+GLuint OpenGLWindow::LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
+
+    // Create the shaders
+    GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+    GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+    // Read the Vertex Shader code from the file
+    std::string VertexShaderCode;
+    std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
+    if(VertexShaderStream.is_open()){
+        std::string Line = "";
+        while(getline(VertexShaderStream, Line))
+            VertexShaderCode += "\n" + Line;
+        VertexShaderStream.close();
+    }else{
+        printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
+        getchar();
+        return 0;
+    }
+
+    // Read the Fragment Shader code from the file
+    std::string FragmentShaderCode;
+    std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
+    if(FragmentShaderStream.is_open()){
+        std::string Line = "";
+        while(getline(FragmentShaderStream, Line))
+            FragmentShaderCode += "\n" + Line;
+        FragmentShaderStream.close();
+    }
+
+    GLint Result = GL_FALSE;
+    int InfoLogLength;
+
+
+    // Compile Vertex Shader
+    printf("Compiling shader : %s\n", vertex_file_path);
+    char const * VertexSourcePointer = VertexShaderCode.c_str();
+    glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
+    glCompileShader(VertexShaderID);
+
+    // Check Vertex Shader
+    glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
+    glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+    if ( InfoLogLength > 0 ){
+        std::vector<char> VertexShaderErrorMessage(InfoLogLength+1);
+        glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
+        printf("%s\n", &VertexShaderErrorMessage[0]);
+    }
+
+
+
+    // Compile Fragment Shader
+    printf("Compiling shader : %s\n", fragment_file_path);
+    char const * FragmentSourcePointer = FragmentShaderCode.c_str();
+    glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
+    glCompileShader(FragmentShaderID);
+
+    // Check Fragment Shader
+    glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
+    glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+    if ( InfoLogLength > 0 ){
+        std::vector<char> FragmentShaderErrorMessage(InfoLogLength+1);
+        glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
+        printf("%s\n", &FragmentShaderErrorMessage[0]);
+    }
+
+
+
+    // Link the program
+    printf("Linking program\n");
+    GLuint ProgramID = glCreateProgram();
+    glAttachShader(ProgramID, VertexShaderID);
+    glAttachShader(ProgramID, FragmentShaderID);
+    glLinkProgram(ProgramID);
+
+    // Check the program
+    glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
+    glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+    if ( InfoLogLength > 0 ){
+        std::vector<char> ProgramErrorMessage(InfoLogLength+1);
+        glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+        printf("%s\n", &ProgramErrorMessage[0]);
+    }
+
+
+    glDetachShader(ProgramID, VertexShaderID);
+    glDetachShader(ProgramID, FragmentShaderID);
+
+    glDeleteShader(VertexShaderID);
+    glDeleteShader(FragmentShaderID);
+
+    return ProgramID;
+}
+
+void OpenGLWindow::initializeVertices()
+{
+    vec_vertices.push_back(glm::vec3(0.000000f    ,1.061000f    ,-0.371000f  ));
+    vec_vertices.push_back(glm::vec3(0.174000f    ,0.800000f    ,-0.024000f ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,0.539000f    ,0.085000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,0.278000f    ,0.107000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,0.213000f    ,0.085000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.222000f   ,0.210000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.265000f   ,0.124000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.417000f   ,0.142000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.526000f   ,0.150000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.591000f   ,0.107000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.852000f   ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(0.217000f    ,1.039000f    ,-0.371000f ));
+    vec_vertices.push_back(glm::vec3(0.457000f    ,0.909000f    ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(0.435000f    ,0.626000f    ,-0.111000f ));
+    vec_vertices.push_back(glm::vec3(0.610000f    ,0.539000f    ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(0.522000f    ,0.278000f    ,-0.111000f ));
+    vec_vertices.push_back(glm::vec3(0.391000f    ,0.374000f    ,0.0300000f ));
+    vec_vertices.push_back(glm::vec3(0.130000f    ,0.278000f    ,0.107000f  ));
+    vec_vertices.push_back(glm::vec3(0.391000f    ,0.322000f    ,0.0300000f ));
+    vec_vertices.push_back(glm::vec3(0.304000f    ,0.225000f    ,-0.002000f ));
+    vec_vertices.push_back(glm::vec3(0.470000f    ,0.148000f    ,-0.111000f ));
+    vec_vertices.push_back(glm::vec3(0.304000f    ,0.204000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(0.304000f    ,0.122000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(0.130000f    ,0.148000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(0.304000f    ,0.104000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(0.109000f    ,-0.157000f   ,0.037000f  ));
+    vec_vertices.push_back(glm::vec3(0.174000f    ,-0.244000f   ,0.037000f  ));
+    vec_vertices.push_back(glm::vec3(0.387000f    ,-0.100000f   ,-0.045000f ));
+    vec_vertices.push_back(glm::vec3(0.550000f    ,-0.250000f   ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(0.609000f    ,0.148000f    ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(0.470000f    ,-0.600000f   ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(0.246000f    ,-0.461000f   ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(0.174000f    ,-0.809000f   ,0.000000f  ));
+    vec_vertices.push_back(glm::vec3(0.043000f    ,-0.396000f   ,0.150000f  ));
+    vec_vertices.push_back(glm::vec3(-0.174000f   ,0.800000f    ,-0.024000f ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,0.539000f    ,0.085000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,0.278000f    ,0.107000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,0.213000f    ,0.085000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.222000f   ,0.210000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.265000f   ,0.124000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.461000f   ,0.124000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.526000f   ,0.150000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.591000f   ,0.107000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.852000f   ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(-0.217000f   ,1.039000f    ,-0.371000f ));
+    vec_vertices.push_back(glm::vec3(-0.457000f   ,0.909000f    ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(-0.435000f   ,0.626000f    ,-0.111000f ));
+    vec_vertices.push_back(glm::vec3(-0.610000f   ,0.539000f    ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(-0.522000f   ,0.278000f    ,-0.111000f ));
+    vec_vertices.push_back(glm::vec3(-0.391000f   ,0.374000f    ,0.030000f  ));
+    vec_vertices.push_back(glm::vec3(-0.130000f   ,0.278000f    ,0.107000f  ));
+    vec_vertices.push_back(glm::vec3(-0.391000f   ,0.322000f    ,0.030000f  ));
+    vec_vertices.push_back(glm::vec3(-0.304000f   ,0.225000f    ,-0.002000f ));
+    vec_vertices.push_back(glm::vec3(-0.470000f   ,0.148000f    ,-0.111000f ));
+    vec_vertices.push_back(glm::vec3(-0.304000f   ,0.204000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(-0.304000f   ,0.122000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(-0.130000f   ,0.148000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(-0.304000f   ,0.104000f    ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(-0.109000f   ,-0.157000f   ,0.037000f  ));
+    vec_vertices.push_back(glm::vec3(-0.174000f   ,-0.244000f   ,0.037000f  ));
+    vec_vertices.push_back(glm::vec3(-0.387000f   ,-0.100000f   ,-0.045000f ));
+    vec_vertices.push_back(glm::vec3(-0.550000f   ,-0.250000f   ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(-0.609000f   ,0.148000f    ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(-0.470000f   ,-0.600000f   ,-0.328000f ));
+    vec_vertices.push_back(glm::vec3(-0.246000f   ,-0.461000f   ,-0.000000f ));
+    vec_vertices.push_back(glm::vec3(-0.174000f   ,-0.809000f   ,0.000000f  ));
+    vec_vertices.push_back(glm::vec3(-0.043000f   ,-0.396000f   ,0.150000f  ));
+    vec_vertices.push_back(glm::vec3(0.348000f    ,0.200000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(0.348000f    ,0.115000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(-0.348000f   ,0.200000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(-0.348000f   ,0.115000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(0.265000f    ,0.200000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(0.265000f    ,0.115000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(-0.265000f   ,0.200000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(-0.265000f   ,0.115000f    ,-0.0300000f));
+    vec_vertices.push_back(glm::vec3(0.080000f   ,-0.220000f   ,0.150000f  ));
+    vec_vertices.push_back(glm::vec3(-0.080000f   ,-0.220000f   ,0.150000f  ));
+    vec_vertices.push_back(glm::vec3(0.022000f    ,0.213000f    ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(-0.022000f   ,0.213000f    ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(0.123000f    ,-0.410000f   ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(-0.123000f   ,-0.410000f   ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(0.100000f    ,-0.461000f   ,0.050000f  ));
+    vec_vertices.push_back(glm::vec3(-0.100000f   ,-0.461000f   ,0.050000f  ));
+    vec_vertices.push_back(glm::vec3(0.100000f    ,-0.461000f   ,0.050000f  ));
+    vec_vertices.push_back(glm::vec3(-0.100000f   ,-0.461000f   ,0.050000f  ));
+    vec_vertices.push_back(glm::vec3(0.123000f    ,-0.508000f   ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(-0.123000f   ,-0.508000f   ,0.063000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,-0.461000f   ,0.124000f  ));
+    vec_vertices.push_back(glm::vec3(0.200000f    ,-0.461000f   ,-0.024000f ));
+    vec_vertices.push_back(glm::vec3(-0.200000f   ,-0.461000f   ,-0.024000f ));
+    vec_vertices.push_back(glm::vec3(0.357000f    ,-0.461000f   ,-0.050000f ));
+    vec_vertices.push_back(glm::vec3(-0.357000f   ,-0.461000f   ,-0.050000f ));
+    vec_vertices.push_back(glm::vec3(0.065000f    ,0.028000f    ,0.050000f  ));
+    vec_vertices.push_back(glm::vec3(-0.065000f   ,0.028000f    ,0.050000f  ));
+    vec_vertices.push_back(glm::vec3(0.000000f    ,0.068000f    ,0.100000f  ));
+    vec_vertices.push_back(glm::vec3(0.387000f    ,0.201000f    ,-0.056000f ));
+    vec_vertices.push_back(glm::vec3(-0.387000f   ,0.201000f    ,-0.056000f ));
+    vec_vertices.push_back(glm::vec3(0.387000f    ,0.186000f    ,-0.056000f ));
+    vec_vertices.push_back(glm::vec3(-0.387000f   ,0.186000f    ,-0.056000f ));
+    vec_vertices.push_back(glm::vec3(0.387000f    ,0.126000f    ,-0.056000f ));
+    vec_vertices.push_back(glm::vec3(-0.387000f   ,0.126000f    ,-0.056000f ));
+    vec_vertices.push_back(glm::vec3(0.387000f    ,0.117000f    ,-0.067000f ));
+    vec_vertices.push_back(glm::vec3(-0.387000f   ,0.117000f    ,-0.067000f ));
+    vec_vertices.push_back(glm::vec3(0.217000f    ,0.201000f    ,-0.013000f ));
+    vec_vertices.push_back(glm::vec3(-0.217000f   ,0.201000f    ,-0.013000f ));
+    vec_vertices.push_back(glm::vec3(0.217000f    ,0.186000f    ,-0.013000f ));
+    vec_vertices.push_back(glm::vec3(-0.217000f   ,0.186000f    ,-0.013000f ));
+    vec_vertices.push_back(glm::vec3(0.217000f    ,0.126000f    ,-0.013000f ));
+    vec_vertices.push_back(glm::vec3(-0.217000f   ,0.126000f    ,-0.013000f ));
+    vec_vertices.push_back(glm::vec3(0.217000f    ,0.117000f    ,-0.024000f ));
+    vec_vertices.push_back(glm::vec3(-0.217000f   ,0.117000f    ,-0.024000f ));
+    vec_vertices.push_back(glm::vec3(0.120000f    ,-0.265000f   ,0.100000f  ));
+    vec_vertices.push_back(glm::vec3(-0.120000f   ,-0.265000f   ,0.100000f  ));
+
+    for(int i = 0; i < vec_vertices.size(); ++i)
+    {
+        vec_vertices[i].y -= 0.1f;
+    }
+    numberOfVertices = vec_vertices.size()*3;
+}
+
+void OpenGLWindow::initializeIndices()
+{
     GLuint indices[] = {
         0   ,11  ,1
         ,0   ,1   ,34
@@ -334,36 +528,207 @@ GLuint myBufferID;
         ,22  ,107 ,72
         ,107 ,23  ,72
     };
+    vec_indices.push_back(glm::vec3(0   ,11  ,1  ));
+    vec_indices.push_back(glm::vec3(0   ,1   ,34 ));
+    vec_indices.push_back(glm::vec3(0   ,34  ,44 ));
+    vec_indices.push_back(glm::vec3(11  ,12  ,1  ));
+    vec_indices.push_back(glm::vec3(44  ,34  ,45 ));
+    vec_indices.push_back(glm::vec3(1   ,12  ,13 ));
+    vec_indices.push_back(glm::vec3(1   ,13  ,2  ));
+    vec_indices.push_back(glm::vec3(1   ,2   ,34 ));
+    vec_indices.push_back(glm::vec3(2   ,46  ,34 ));
+    vec_indices.push_back(glm::vec3(34  ,46  ,45 ));
+    vec_indices.push_back(glm::vec3(12  ,14  ,13 ));
+    vec_indices.push_back(glm::vec3(13  ,14  ,15 ));
+    vec_indices.push_back(glm::vec3(13  ,15  ,16 ));
+    vec_indices.push_back(glm::vec3(2   ,13  ,16 ));
+    vec_indices.push_back(glm::vec3(2   ,16  ,17 ));
+    vec_indices.push_back(glm::vec3(2   ,17  ,3  ));
+    vec_indices.push_back(glm::vec3(2   ,3   ,50 ));
+    vec_indices.push_back(glm::vec3(2   ,50  ,49 ));
+    vec_indices.push_back(glm::vec3(2   ,49  ,46 ));
+    vec_indices.push_back(glm::vec3(46  ,49  ,48 ));
+    vec_indices.push_back(glm::vec3(46  ,48  ,47 ));
+    vec_indices.push_back(glm::vec3(45  ,46  ,47 ));
+    vec_indices.push_back(glm::vec3(14  ,29  ,15 ));
+    vec_indices.push_back(glm::vec3(15  ,29  ,20 ));
+    vec_indices.push_back(glm::vec3(18  ,15  ,19 ));
+    vec_indices.push_back(glm::vec3(18  ,16  ,15 ));
+    vec_indices.push_back(glm::vec3(16  ,18  ,17 ));
+    vec_indices.push_back(glm::vec3(17  ,18  ,19 ));
+    vec_indices.push_back(glm::vec3(17  ,23  ,77 ));
+    vec_indices.push_back(glm::vec3(3   ,17  ,77 ));
+    vec_indices.push_back(glm::vec3(3   ,78  ,50 ));
+    vec_indices.push_back(glm::vec3(78  ,56  ,50 ));
+    vec_indices.push_back(glm::vec3(50  ,52  ,51 ));
+    vec_indices.push_back(glm::vec3(49  ,50  ,51 ));
+    vec_indices.push_back(glm::vec3(48  ,49  ,51 ));
+    vec_indices.push_back(glm::vec3(48  ,51  ,52 ));
+    vec_indices.push_back(glm::vec3(48  ,53  ,62 ));
+    vec_indices.push_back(glm::vec3(47  ,48  ,62 ));
+    vec_indices.push_back(glm::vec3(29  ,28  ,27 ));
+    vec_indices.push_back(glm::vec3(20  ,29  ,27 ));
+    vec_indices.push_back(glm::vec3(24  ,26  ,25 ));
+    vec_indices.push_back(glm::vec3(57  ,58  ,59 ));
+    vec_indices.push_back(glm::vec3(53  ,60  ,62 ));
+    vec_indices.push_back(glm::vec3(62  ,60  ,61 ));
+    vec_indices.push_back(glm::vec3(111 ,26  ,33 ));
+    vec_indices.push_back(glm::vec3(75  ,26  ,111));
+    vec_indices.push_back(glm::vec3(75  ,25  ,26 ));
+    vec_indices.push_back(glm::vec3(76  ,59  ,58 ));
+    vec_indices.push_back(glm::vec3(76  ,112 ,59 ));
+    vec_indices.push_back(glm::vec3(112 ,66  ,59 ));
+    vec_indices.push_back(glm::vec3(6   ,33  ,7  ));
+    vec_indices.push_back(glm::vec3(6   ,7   ,66 ));
+    vec_indices.push_back(glm::vec3(9   ,32  ,10 ));
+    vec_indices.push_back(glm::vec3(9   ,10  ,65 ));
+    vec_indices.push_back(glm::vec3(6   ,76  ,5  ));
+    vec_indices.push_back(glm::vec3(6   ,5   ,75 ));
+    vec_indices.push_back(glm::vec3(3   ,77  ,78 ));
+    vec_indices.push_back(glm::vec3(7   ,33  ,79 ));
+    vec_indices.push_back(glm::vec3(7   ,79  ,81 ));
+    vec_indices.push_back(glm::vec3(7   ,81  ,87 ));
+    vec_indices.push_back(glm::vec3(7   ,80  ,66 ));
+    vec_indices.push_back(glm::vec3(7   ,82  ,80 ));
+    vec_indices.push_back(glm::vec3(7   ,87  ,82 ));
+    vec_indices.push_back(glm::vec3(80  ,82  ,89 ));
+    vec_indices.push_back(glm::vec3(80  ,89  ,64 ));
+    vec_indices.push_back(glm::vec3(79  ,88  ,81 ));
+    vec_indices.push_back(glm::vec3(79  ,31  ,88 ));
+    vec_indices.push_back(glm::vec3(26  ,79  ,33 ));
+    vec_indices.push_back(glm::vec3(26  ,31  ,79 ));
+    vec_indices.push_back(glm::vec3(59  ,66  ,80 ));
+    vec_indices.push_back(glm::vec3(59  ,80  ,64 ));
+    vec_indices.push_back(glm::vec3(88  ,83  ,85 ));
+    vec_indices.push_back(glm::vec3(88  ,85  ,31 ));
+    vec_indices.push_back(glm::vec3(83  ,8   ,85 ));
+    vec_indices.push_back(glm::vec3(83  ,40  ,8  ));
+    vec_indices.push_back(glm::vec3(8   ,40  ,84 ));
+    vec_indices.push_back(glm::vec3(8   ,84  ,86 ));
+    vec_indices.push_back(glm::vec3(86  ,89  ,84 ));
+    vec_indices.push_back(glm::vec3(86  ,64  ,89 ));
+    vec_indices.push_back(glm::vec3(9   ,85  ,8  ));
+    vec_indices.push_back(glm::vec3(9   ,8   ,86 ));
+    vec_indices.push_back(glm::vec3(32  ,85  ,31 ));
+    vec_indices.push_back(glm::vec3(32  ,9   ,85 ));
+    vec_indices.push_back(glm::vec3(65  ,86  ,64 ));
+    vec_indices.push_back(glm::vec3(65  ,9   ,86 ));
+    vec_indices.push_back(glm::vec3(27  ,26  ,24 ));
+    vec_indices.push_back(glm::vec3(90  ,30  ,32 ));
+    vec_indices.push_back(glm::vec3(90  ,32  ,31 ));
+    vec_indices.push_back(glm::vec3(90  ,30  ,28 ));
+    vec_indices.push_back(glm::vec3(90  ,26  ,31 ));
+    vec_indices.push_back(glm::vec3(90  ,27  ,26 ));
+    vec_indices.push_back(glm::vec3(90  ,28  ,27 ));
+    vec_indices.push_back(glm::vec3(60  ,59  ,57 ));
+    vec_indices.push_back(glm::vec3(91  ,65  ,63 ));
+    vec_indices.push_back(glm::vec3(91  ,64  ,65 ));
+    vec_indices.push_back(glm::vec3(91  ,61  ,63 ));
+    vec_indices.push_back(glm::vec3(91  ,64  ,59 ));
+    vec_indices.push_back(glm::vec3(91  ,59  ,60 ));
+    vec_indices.push_back(glm::vec3(91  ,60  ,61 ));
+    vec_indices.push_back(glm::vec3(92  ,77  ,23 ));
+    vec_indices.push_back(glm::vec3(92  ,23  ,25 ));
+    vec_indices.push_back(glm::vec3(92  ,25  ,75 ));
+    vec_indices.push_back(glm::vec3(93  ,56  ,78 ));
+    vec_indices.push_back(glm::vec3(93  ,76  ,58 ));
+    vec_indices.push_back(glm::vec3(93  ,58  ,56 ));
+    vec_indices.push_back(glm::vec3(94  ,77  ,92 ));
+    vec_indices.push_back(glm::vec3(94  ,92  ,75 ));
+    vec_indices.push_back(glm::vec3(94  ,75  ,5  ));
+    vec_indices.push_back(glm::vec3(94  ,5   ,76 ));
+    vec_indices.push_back(glm::vec3(94  ,76  ,93 ));
+    vec_indices.push_back(glm::vec3(94  ,93  ,78 ));
+    vec_indices.push_back(glm::vec3(94  ,78  ,77 ));
+    vec_indices.push_back(glm::vec3(20  ,95  ,15 ));
+    vec_indices.push_back(glm::vec3(20  ,97  ,95 ));
+    vec_indices.push_back(glm::vec3(20  ,101 ,99 ));
+    vec_indices.push_back(glm::vec3(20  ,27  ,101));
+    vec_indices.push_back(glm::vec3(95  ,19  ,15 ));
+    vec_indices.push_back(glm::vec3(95  ,21  ,19 ));
+    vec_indices.push_back(glm::vec3(95  ,97  ,21 ));
+    vec_indices.push_back(glm::vec3(101 ,27  ,24 ));
+    vec_indices.push_back(glm::vec3(101 ,24  ,22 ));
+    vec_indices.push_back(glm::vec3(101 ,22  ,99 ));
+    vec_indices.push_back(glm::vec3(23  ,103 ,17 ));
+    vec_indices.push_back(glm::vec3(23  ,105 ,103));
+    vec_indices.push_back(glm::vec3(23  ,109 ,107));
+    vec_indices.push_back(glm::vec3(23  ,25  ,109));
+    vec_indices.push_back(glm::vec3(103 ,17  ,19 ));
+    vec_indices.push_back(glm::vec3(103 ,19  ,21 ));
+    vec_indices.push_back(glm::vec3(103 ,21  ,105));
+    vec_indices.push_back(glm::vec3(109 ,107 ,22 ));
+    vec_indices.push_back(glm::vec3(109 ,22  ,24 ));
+    vec_indices.push_back(glm::vec3(109 ,24  ,25 ));
+    vec_indices.push_back(glm::vec3(56  ,104 ,50 ));
+    vec_indices.push_back(glm::vec3(56  ,106 ,104));
+    vec_indices.push_back(glm::vec3(56  ,110 ,108));
+    vec_indices.push_back(glm::vec3(56  ,58  ,110));
+    vec_indices.push_back(glm::vec3(104 ,52  ,50 ));
+    vec_indices.push_back(glm::vec3(104 ,54  ,52 ));
+    vec_indices.push_back(glm::vec3(104 ,106 ,54 ));
+    vec_indices.push_back(glm::vec3(110 ,55  ,108));
+    vec_indices.push_back(glm::vec3(110 ,57  ,55 ));
+    vec_indices.push_back(glm::vec3(110 ,58  ,57 ));
+    vec_indices.push_back(glm::vec3(53  ,48  ,96 ));
+    vec_indices.push_back(glm::vec3(53  ,98  ,96 ));
+    vec_indices.push_back(glm::vec3(53  ,100 ,102));
+    vec_indices.push_back(glm::vec3(53  ,102 ,60 ));
+    vec_indices.push_back(glm::vec3(96  ,48  ,52 ));
+    vec_indices.push_back(glm::vec3(96  ,52  ,54 ));
+    vec_indices.push_back(glm::vec3(96  ,54  ,98 ));
+    vec_indices.push_back(glm::vec3(102 ,100 ,55 ));
+    vec_indices.push_back(glm::vec3(102 ,55  ,57 ));
+    vec_indices.push_back(glm::vec3(102 ,57  ,60 ));
+    vec_indices.push_back(glm::vec3(111 ,6   ,75 ));
+    vec_indices.push_back(glm::vec3(111 ,33  ,6  ));
+    vec_indices.push_back(glm::vec3(112 ,76  ,6  ));
+    vec_indices.push_back(glm::vec3(112 ,6   ,66 ));
+    vec_indices.push_back(glm::vec3(73  ,74  ,70 ));
+    vec_indices.push_back(glm::vec3(73  ,70  ,69 ));
+    vec_indices.push_back(glm::vec3(67  ,68  ,72 ));
+    vec_indices.push_back(glm::vec3(67  ,72  ,71 ));
+    vec_indices.push_back(glm::vec3(53  ,69  ,70 ));
+    vec_indices.push_back(glm::vec3(56  ,74  ,73 ));
+    vec_indices.push_back(glm::vec3(23  ,71  ,72 ));
+    vec_indices.push_back(glm::vec3(20  ,68  ,67 ));
+    vec_indices.push_back(glm::vec3(98  ,69  ,53 ));
+    vec_indices.push_back(glm::vec3(54  ,69  ,98 ));
+    vec_indices.push_back(glm::vec3(54  ,73  ,69 ));
+    vec_indices.push_back(glm::vec3(54  ,106 ,73 ));
+    vec_indices.push_back(glm::vec3(106 ,56  ,73 ));
+    vec_indices.push_back(glm::vec3(56  ,108 ,74 ));
+    vec_indices.push_back(glm::vec3(55  ,74  ,108));
+    vec_indices.push_back(glm::vec3(55  ,70  ,74 ));
+    vec_indices.push_back(glm::vec3(55  ,100 ,70 ));
+    vec_indices.push_back(glm::vec3(100 ,53  ,70 ));
+    vec_indices.push_back(glm::vec3(20  ,67  ,97 ));
+    vec_indices.push_back(glm::vec3(97  ,67  ,21 ));
+    vec_indices.push_back(glm::vec3(21  ,67  ,71 ));
+    vec_indices.push_back(glm::vec3(21  ,71  ,105));
+    vec_indices.push_back(glm::vec3(105 ,71  ,23 ));
+    vec_indices.push_back(glm::vec3(20  ,99  ,68 ));
+    vec_indices.push_back(glm::vec3(68  ,99  ,22 ));
+    vec_indices.push_back(glm::vec3(22  ,72  ,68 ));
+    vec_indices.push_back(glm::vec3(22  ,107 ,72 ));
+    vec_indices.push_back(glm::vec3(107 ,23  ,72 ));
+
+
+    numberOfIndices = vec_indices.size()*3;
+
     GLuint indexBufferID;
     glGenBuffers(1, &indexBufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
-
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(glm::vec3)*vec_indices.size(), indices, GL_DYNAMIC_DRAW);
 
 }
 
-void OpenGLWindow::paintGL()
+void OpenGLWindow::initializeColor()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-glDrawElements(GL_TRIANGLES, 552, GL_UNSIGNED_INT, 0);
-if(start == true)
-{
-glTranslated(0,-0.04,0);
-start = false;
+     vec_color.push_back(glm::vec3(1,0,0));
+    for(int i = 0; i < vec_vertices.size()-1; ++i)
+    {
+        vec_color.push_back(glm::vec3(1,1,1));
+    }
 }
 
-
-
-
-
-
-
-
-
-}
-
-void OpenGLWindow::resizeGL(int w, int h)
-{
-glViewport(0, 0, w, h);
-}

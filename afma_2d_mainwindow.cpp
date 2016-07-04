@@ -57,6 +57,7 @@ void AFMA_2D_MainWindow::updateAnnotation()
          {
              vec_points.push_back(help);
              ui->graphicsView->vec_pt[i] = help;
+             ui->openGLWidget->vec_pt[i] = help;
          }
       }
     }
@@ -68,6 +69,7 @@ void AFMA_2D_MainWindow::updateAnnotation(std::vector<QPointF> pts)
 {
     vec_points = pts;
     ui->graphicsView->vec_pt = pts;
+    ui->openGLWidget->vec_pt = pts;
     new_vec_points = pts;
 }
 
@@ -75,6 +77,7 @@ void AFMA_2D_MainWindow::clearAnnotation()
 {
     vec_points.clear();
     ui->graphicsView->vec_pt.clear();
+    ui->openGLWidget->vec_pt.clear();
     new_vec_points.clear();
 }
 
@@ -308,6 +311,7 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
                                     }
                                     vec_points.push_back(pt);
                                     ui->graphicsView->vec_pt.push_back(pt);
+                                    ui->openGLWidget->vec_pt.push_back(pt);
                                     new_vec_points.push_back(pt);
                                     debugMessage(QString::number(vec_points.size()));
                                 }
@@ -367,6 +371,7 @@ void AFMA_2D_MainWindow::on_psBtn_UndoLastPoint_clicked()
     if(ui->graphicsView->vec_pt.size() > 0)
     {
     ui->graphicsView->vec_pt.pop_back();
+    ui->openGLWidget->vec_pt.pop_back();
     }
     setDisplayImage(m_displayed_Image);
     drawAnnotation(vec_points);
@@ -379,3 +384,13 @@ void AFMA_2D_MainWindow::on_sld_Scale_sliderPressed()
 }
 
 
+
+void AFMA_2D_MainWindow::on_psBtn_Draw3D_clicked()
+{
+    ui->openGLWidget->draw();
+}
+
+void AFMA_2D_MainWindow::on_psBtn_NextPoint_clicked()
+{
+    ui->openGLWidget->next();
+}

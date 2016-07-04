@@ -80,6 +80,10 @@ private slots:
 
     void on_sld_Scale_sliderPressed();
 
+    void on_psBtn_Draw3D_clicked();
+
+    void on_psBtn_NextPoint_clicked();
+
 private:
     Ui::AFMA_2D_MainWindow *ui;
 };

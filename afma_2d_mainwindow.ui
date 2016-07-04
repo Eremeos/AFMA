@@ -137,6 +137,20 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="psBtn_NextPoint">
+       <property name="text">
+        <string>Next Point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="psBtn_Draw3D">
+       <property name="text">
+        <string>Draw 3D</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QSlider" name="sld_Scale">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">

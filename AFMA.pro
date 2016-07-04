@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT       += core gui opengl 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,17 +29,17 @@ HEADERS  += afma_mainwindow.h \
     facecomponent2d.h \
     facemodel2d.h \
     afma_2d_imagedisplay.h \
-    openglwindow.h
+    openglwindow.h \
+	glm\vec3.hpp
 
 FORMS    += afma_mainwindow.ui \
     afma_2d_mainwindow.ui \
     afma_3d_mainwindow.ui
 
 INCLUDEPATH += D:\\Programme\\opencv\\mybuild\\install\\include \
-D:\\Programme\\glew-1.13.0\\include
+D:\Programme\glm-0.9.7.5\glm
 
 LIBS += -LD:\Qt\5.5\mingw492_32\lib\libQt5OpenGL.a -lopengl32\
--LD:\\Programme\\glew-1.13.0\\lib\\Release\\Win32 lglew32\
 -LD:\\Programme\\opencv\\mybuild\\lib\\Debug \
 -lopencv_videostab310d \
 -lopencv_stitching310d \
@@ -97,7 +97,9 @@ DISTFILES += \
     images/passbild 2 grey.tif \
     images/passbild 2 grey-1.tif \
     images/passbild 2-2.tif \
-    images/Result of passbild 2-2.tif
+    images/Result of passbild 2-2.tif \
+    vertexshader.vert \
+    fragmentshader.frag
 
 
 
