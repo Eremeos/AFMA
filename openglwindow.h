@@ -7,6 +7,7 @@
 #include <QGLWidget>
 #include <QMouseEvent>
 #include <glm/vec3.hpp>
+#include <facemodelcandide.h>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -20,14 +21,11 @@ public:
     void draw();
     void next();
     bool bdraw = false;
-    std::vector<glm::vec3> vec_vertices;
-    std::vector<glm::vec3> vec_color;
-    std::vector<glm::vec3> vec_indices;
     std::vector<QPointF> vec_pt;
     int numberOfVertices;
     int numberOfIndices;
     int count = 0;
-
+    FacemodelCandide model;
     GLuint programID;
 
     GLuint myBufferID;
