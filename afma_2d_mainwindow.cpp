@@ -109,7 +109,9 @@ void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
 void AFMA_2D_MainWindow::on_psBtn_SetPixel_clicked()
 {
     m_displayed_Image.copyTo(m_morphed_Image);
-    setDisplayImage(Utility2D::convertToGreyScale(m_morphed_Image), new_vec_points);
+ //   setDisplayImage(Utility2D::convertToGreyScale(m_morphed_Image), new_vec_points);
+    Utility2D::convert(vec_points, ui->openGLWidget->model.vec_vertices, m_morphed_Image);
+    ui->openGLWidget->update();
 }
 
 void AFMA_2D_MainWindow::setDisplayImage(cv::Mat newImage, std::vector<QPointF> annotation_points)

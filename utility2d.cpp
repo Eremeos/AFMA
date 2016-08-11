@@ -6,7 +6,7 @@
 #include <opencv/cv.h>
 #include <opencv2/objdetect/objdetect.hpp>
 #include <stdio.h>
-
+#include <glm/glm.hpp>
 
 
 Utility2D::Utility2D()
@@ -109,6 +109,33 @@ void Utility2D::generateFaceModel(FaceModel2D &faceModel, cv::Mat ima)
     faceModel.setLeftEye(eyes[0]);
     faceModel.setRightEye(eyes[1]);
     faceModel.setMouth(mouth[0]);
+}
+
+void Utility2D::convert(std::vector<QPointF> &vec_points, std::vector<glm::vec3> &vec_vertices, cv::Mat ima)
+{
+ float width = ima.cols;
+ float height = ima.rows;
+
+/* for(int i = 0; i < vec_points.size();++i)
+ {
+    if(vec_points[i].x() > width)
+    {
+        width = vec_points[i].x();
+    }
+
+    if(vec_points[i].y() > height)
+    {
+        height = vec_points[i].y();
+    }
+ } */
+
+ for(int i = 0; i < vec_points.size();++i)
+ {
+     vec_vertices[i].x = (vec_points[i].x()/width *2)-1;
+     vec_vertices[i].y = ((vec_points[i].y()/height*2)-1)*-1;
+
+ }
+
 }
 
 

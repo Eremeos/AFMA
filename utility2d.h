@@ -1,5 +1,6 @@
 #ifndef UTILITY2D_H
 #define UTILITY2D_H
+#include <glm/glm.hpp>
 #include <QImage>
 #include <opencv2/core/core.hpp>
 #include <stdio.h>
@@ -21,6 +22,8 @@ public:
     static void drawRect(cv::Mat newImage, FaceComponent2D component);
     static void drawEllipse(cv::Mat newImage, FaceComponent2D component);
     static void generateFaceModel(FaceModel2D &faceModel, cv::Mat ima);
+
+    static void convert(std::vector<QPointF> &vec_points, std::vector<glm::vec3> &vec_vertices, cv::Mat ima);
 };
 
 
