@@ -132,7 +132,7 @@ void Utility2D::convert(std::vector<QPointF> &vec_points, std::vector<glm::vec3>
  for(int i = 0; i < vec_points.size();++i)
  {
      vec_vertices[i].x = (vec_points[i].x()/width *2)-1;
-     vec_vertices[i].y = ((vec_points[i].y()/height*2)-1)*-1;
+     vec_vertices[i].y = ((vec_points[i].y()/height*(-2))+1);
 
  }
 

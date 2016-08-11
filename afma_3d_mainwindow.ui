@@ -43,7 +43,24 @@
     </rect>
    </property>
   </widget>
+  <widget class="OpenGLAnnotationWindow" name="openGLAnnotationWidget">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>20</y>
+     <width>341</width>
+     <height>541</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OpenGLAnnotationWindow</class>
+   <extends>QOpenGLWidget</extends>
+   <header>openglannotationwindow.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
