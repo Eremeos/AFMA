@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <stdio.h>
 #include <fstream>
+#include <QOpenGLShaderProgram>
 
 
 
@@ -28,24 +29,28 @@ void OpenGLWindow::initializeGL()
     glPointSize(4);
     glIsEnabled(true);
 
-    programID = LoadShaders( "..\\AFMA\\vertexshader.vert", "..\\AFMA\\fragmentshader.frag" );
-    glUseProgram(programID);
+   // programID = LoadShaders( "..\\AFMA\\vertexshader.vert", "..\\AFMA\\fragmentshader.frag" );
+   // glUseProgram(programID);
 
+    m_shader.addShaderFromSourceFile(QOpenGLShader::Vertex, "..\\AFMA\\modelvertexshader.vert");
+    m_shader.addShaderFromSourceFile(QOpenGLShader::Fragment, "..\\AFMA\\modelfragmentshader.frag");
 
-
+    m_shader.link();
+    m_shader.bind();
 
     numberOfVertices = model.vec_vertices.size();
 
     numberOfIndices = model.vec_indices.size();
 
-    GLuint indexBufferID;
-    glGenBuffers(1, &indexBufferID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(glm::vec3)*model.vec_indices.size(), &model.vec_indices[0], GL_DYNAMIC_DRAW);
 
 
 
-
+    VAO.create();
+    VAO.bind();
+    VBO.create();
+    VBO.bind();
+    VBO2.create();
+    VBO2.bind();
 
 }
 
@@ -53,26 +58,33 @@ void OpenGLWindow::paintGL()
 {
     if(bdraw ==true)
     {
-        glGenBuffers(1, &myBufferID);
-        glBindBuffer(GL_ARRAY_BUFFER, myBufferID);
-        glVertexPointer(3, GL_FLOAT, 0, 0);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*numberOfVertices, &model.vec_vertices[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
 
-        glGenBuffers(1, &colorbuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-        glColorPointer(3, GL_FLOAT, 0, 0);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4)*numberOfVertices, &model.vec_color[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(
-            1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-            4,                                // size
-            GL_FLOAT,                         // type
-            GL_FALSE,                         // normalized?
-            0,                                // stride
-            (void*)0                          // array buffer offset
-        );
+     // glGenBuffers(1, &myBufferID);
+     // glBindBuffer(GL_ARRAY_BUFFER, myBufferID);
+     //  glVertexPointer(3, GL_FLOAT, 0, 0);
+     //     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*numberOfVertices, &model.vec_vertices[0], GL_STATIC_DRAW);
+      //  glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
+        VBO.bind();
+        VBO.allocate(model.vec_vertices.data(), sizeof(glm::vec3)*numberOfVertices);
+
+
+        m_shader.enableAttributeArray(0);
+
+         m_shader.setAttributeBuffer( 0, GL_FLOAT, 0, 3 );
+
+
+        //glGenBuffers(1, &colorbuffer);
+        //glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+        //glColorPointer(3, GL_FLOAT, 0, 0);
+       // glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4)*numberOfVertices, &model.vec_color[0], GL_STATIC_DRAW);
+         //  glVertexAttribPointer( 1,4,GL_FLOAT,GL_FALSE, 0,(void*)0);
+
+        VBO2.bind();
+        VBO2.allocate(model.vec_color.data(), sizeof(glm::vec3)*numberOfVertices);
+
+        m_shader.enableAttributeArray(1);
+        m_shader.setAttributeBuffer( 1, GL_FLOAT, 0, 4 );
+
 
 
 

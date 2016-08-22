@@ -103,6 +103,8 @@ void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
 
     setDisplayImage(m_image);
     ui->sld_Scale->setSliderPosition(m_initial_Slider_position);
+     ui->annotationWidget->filepath = m_fileName;
+     ui->annotationWidget->update();
 
 }
 

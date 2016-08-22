@@ -9,7 +9,9 @@
 #include <QMouseEvent>
 #include <glm/vec3.hpp>
 #include <facemodelcandide.h>
-
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
+#include <QOpenGLShaderProgram>
 
 class OpenGLAnnotationWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -34,6 +36,17 @@ public:
     void draw();
     void next();
     bool bdraw = false;
+
+    QOpenGLVertexArrayObject background_VAO;
+    QOpenGLVertexArrayObject drawing_VAO;
+    QOpenGLBuffer VBO;
+    QOpenGLBuffer VBO2;
+    QOpenGLBuffer Texture;
+    std::vector<glm::vec3> background;
+    std::vector<glm::vec2> tex;
+    QOpenGLShaderProgram m_shader;
+    QString filepath;
+
 
 signals:
 

@@ -41,7 +41,8 @@ FORMS    += afma_mainwindow.ui \
     afma_3d_mainwindow.ui
 
 INCLUDEPATH += D:\\Programme\\opencv\\mybuild\\install\\include \
-D:\Programme\glm-0.9.7.5\glm
+D:\Programme\glm-0.9.7.5\glm \
+
 
 LIBS += -LD:\Qt\5.5\mingw492_32\lib\libQt5OpenGL.a -lopengl32\
 -LD:\\Programme\\opencv\\mybuild\\lib\\Debug \
@@ -62,6 +63,7 @@ LIBS += -LD:\Qt\5.5\mingw492_32\lib\libQt5OpenGL.a -lopengl32\
 -lopencv_flann310d \
 -lopencv_ml310d \
 -lopencv_core310d 
+
 
 DISTFILES += \
     haarcascades/haarcascade_eye.xml \
@@ -89,7 +91,6 @@ DISTFILES += \
     images/Passbild_04.jpg \
     images/Passbild01.jpg \
     images/Result of passbild 2-2.jpg \
-    images/Vroni, 2015, Öl auf Leinwand, 180 x 230 cm.jpg \
     images/Png.PNG \
     images/Unbenannt.PNG \
     images/images edges.tif \
@@ -102,8 +103,7 @@ DISTFILES += \
     images/passbild 2 grey-1.tif \
     images/passbild 2-2.tif \
     images/Result of passbild 2-2.tif \
-    vertexshader.vert \
-    fragmentshader.frag
-
-
-
+    modelfragmentshader.frag \
+    modelvertexshader.vert \
+    annotationvertexshader.vert \
+    annotationfragmentshader.frag

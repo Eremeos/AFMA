@@ -1,10 +1,21 @@
+
 #include "openglannotationwindow.h"
+
 #include <QOpenGLWidget>
+#include <QOpenGLVertexArrayObject>
 #include <iostream>
 #include <glm/glm.hpp>
 #include <stdio.h>
 #include <fstream>
 #include <QMouseEvent>
+#include <QOpenGLBuffer>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <QOpenGLTexture>
+
+
+GLuint      texture[1];
 
 OpenGLAnnotationWindow::OpenGLAnnotationWindow(QWidget *parent) : QOpenGLWidget(parent)
 {
@@ -23,6 +34,7 @@ void OpenGLAnnotationWindow::mousePressEvent(QMouseEvent *e)
 
 void OpenGLAnnotationWindow::initializeGL()
 {
+
     initializeOpenGLFunctions();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable( GL_BLEND );
@@ -35,57 +47,147 @@ void OpenGLAnnotationWindow::initializeGL()
   //  programID = LoadShaders( "..\\AFMA\\vertexshader.vert", "..\\AFMA\\fragmentshader.frag" );
   //  glUseProgram(programID);
 
+
+ /*   m_shader.addShaderFromSourceFile(QOpenGLShader::Vertex, "..\\AFMA\\annotationvertexshader.vert");
+    m_shader.addShaderFromSourceFile(QOpenGLShader::Fragment, "..\\AFMA\\annotationfragmentshader.frag");
+
+   m_shader.link();
+   m_shader.bind(); */
+
+
+    background_VAO.create();
+    background_VAO.bind();
+    background.push_back(glm::vec3(-1.0f, 1.0f, 0.0f));
+    background.push_back(glm::vec3(-1.0f, -1.0f, 0.0f));
+    background.push_back(glm::vec3(1.0f,  -1.0f, 0.0f));
+    background.push_back(glm::vec3(1.0f,  1.0f, 0.0f));
+
+
+    tex.push_back(glm::vec2(-1.0f, 1.0f));
+    tex.push_back(glm::vec2(-1.0f, -1.0f));
+    tex.push_back(glm::vec2(1.0f,  -1.0f));
+    tex.push_back(glm::vec2(1.0f,  1.0f));
+
+    // Generate 1 buffer, put the resulting identifier in vertexbuffer
+  VBO.create();
+
+    // The following commands will talk about our 'vertexbuffer' buffer
+  VBO.bind();
+
+
+  VBO2.create();
+  VBO2.bind();
+
+
+
 }
 
 void OpenGLAnnotationWindow::paintGL()
 {
- /*   if(bdraw ==true)
-    {
-        glGenBuffers(1, &myBufferID);
-        glBindBuffer(GL_ARRAY_BUFFER, myBufferID);
-        glVertexPointer(3, GL_FLOAT, 0, 0);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*numberOfVertices, &model.vec_vertices[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
 
-        glGenBuffers(1, &colorbuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-        glColorPointer(3, GL_FLOAT, 0, 0);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4)*numberOfVertices, &model.vec_color[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(
-            1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-            4,                                // size
-            GL_FLOAT,                         // type
-            GL_FALSE,                         // normalized?
-            0,                                // stride
-            (void*)0                          // array buffer offset
-        );
+        // Load cube.png image
+        QOpenGLTexture * texture = new QOpenGLTexture(QImage(filepath).mirrored());
+
+        // Set nearest filtering mode for texture minification
+        texture->setMinificationFilter(QOpenGLTexture::Nearest);
+
+        // Set bilinear filtering mode for texture magnification
+        texture->setMagnificationFilter(QOpenGLTexture::Linear);
+
+        // Wrap texture coordinates by repeating
+        // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
+        texture->setWrapMode(QOpenGLTexture::Repeat);
+
+            texture->bind();
+
+    // Give our vertices to OpenGL.
+
+glEnable(GL_TEXTURE_2D);
 
 
 
+    VBO.allocate(background.data(), sizeof(glm::vec3)*background.size());
 
 
-glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-glPolygonMode(GL_BACK,GL_POINTS);
+      VBO.bind();
+ /*     m_shader.enableAttributeArray(0);
+      m_shader.setAttributeBuffer( 0, GL_FLOAT, 0, 3 );
 
-glDrawArrays(GL_POINTS, 0, numberOfVertices);
-//glDrawElements(GL_TRIANGLES, numberOfIndices, GL_UNSIGNED_INT, 0);
-    }
-*/
+
+      m_shader.enableAttributeArray(1);
+      m_shader.setAttributeBuffer(1, GL_FLOAT, 0, 2);
+
+      */
+
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+
+
+    glPolygonMode(GL_BACK,GL_QUADS);
+ //   glDrawArrays(GL_QUADS, 0, background.size());
+
+
+    texture->bind();
+
+    glBegin(GL_QUADS);
+        // Front Face
+        glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
+        glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);  // Bottom Right Of The Texture and Quad
+        glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);  // Top Right Of The Texture and Quad
+        glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);  // Top Left Of The Texture and Quad
+        // Back Face
+        glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);  // Bottom Right Of The Texture and Quad
+        glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);  // Top Right Of The Texture and Quad
+        glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);  // Top Left Of The Texture and Quad
+        glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);  // Bottom Left Of The Texture and Quad
+        // Top Face
+        glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);  // Top Left Of The Texture and Quad
+        glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
+        glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);  // Bottom Right Of The Texture and Quad
+        glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);  // Top Right Of The Texture and Quad
+        // Bottom Face
+        glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);  // Top Right Of The Texture and Quad
+        glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);  // Top Left Of The Texture and Quad
+        glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
+        glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);  // Bottom Right Of The Texture and Quad
+        // Right face
+        glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);  // Bottom Right Of The Texture and Quad
+        glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);  // Top Right Of The Texture and Quad
+        glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);  // Top Left Of The Texture and Quad
+        glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
+        // Left Face
+        glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);  // Bottom Left Of The Texture and Quad
+        glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);  // Bottom Right Of The Texture and Quad
+        glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);  // Top Right Of The Texture and Quad
+        glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);  // Top Left Of The Texture and Quad
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+
     if(vec_vertices.size() > 0)
     {
+ //   VBO2.allocate(vec_vertices.data(), sizeof(glm::vec3)*vec_vertices.size());
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    glColor3f(0.0,0.0,1.0);
-    glPointSize(4);
+  // glDrawArrays(GL_POINTS, 0, vec_vertices.size());
+
     glBegin(GL_POINTS);
-    for(int i = 0; i < vec_vertices.size(); ++i)
-       glVertex3f(vec_vertices[i].x,vec_vertices[i].y,0);
-    glEnd();
+
+        for(int i = 0; i < vec_vertices.size();++i)
+        {
+           glColor3f(1,0,0);
+           glVertex3f(vec_vertices[i].x,vec_vertices[i].y,vec_vertices[i].z);
+           glColor4f(1,1,1,1);
+        }
+        glEnd();
+
     }
+
+    glEnable(GL_TEXTURE_2D);
 
 }
 
@@ -217,4 +319,7 @@ GLuint OpenGLAnnotationWindow::LoadShaders(const char * vertex_file_path,const c
 
     return ProgramID;
 }
+
+
+
 

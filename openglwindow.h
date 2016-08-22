@@ -8,6 +8,9 @@
 #include <QMouseEvent>
 #include <glm/vec3.hpp>
 #include <facemodelcandide.h>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLBuffer>
+#include <QOpenGLShaderProgram>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -37,6 +40,11 @@ public:
     void initializeIndices();
     void initializeColor();
 
+    QOpenGLVertexArrayObject VAO;
+    QOpenGLVertexArrayObject drawing_VAO;
+    QOpenGLBuffer VBO;
+    QOpenGLBuffer VBO2;
+    QOpenGLShaderProgram m_shader;
 
 signals:
 

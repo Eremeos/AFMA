@@ -44,6 +44,16 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="OpenGLAnnotationWindow" name="annotationWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -218,6 +228,11 @@
    <class>OpenGLWindow</class>
    <extends>QOpenGLWidget</extends>
    <header>openglwindow.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OpenGLAnnotationWindow</class>
+   <extends>QOpenGLWidget</extends>
+   <header location="global">openglannotationwindow.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
