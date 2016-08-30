@@ -13,9 +13,18 @@ public:
     void initializeIndices();
 
     std::vector<glm::vec3> vec_vertices;
+    std::vector<glm::vec3> vec_vertices_base;
+    std::vector<glm::vec3> vec_changed;
     std::vector<glm::vec4> vec_color;
     std::vector<glm::vec3> vec_indices;
+    std::vector<unsigned short> vec_indices_ushort;
 
+    struct lefteye{
+        std::vector<short> referencePoint;
+        std::vector<glm::vec3> vertice;
+    };
+
+    void upperLipraiser();
 
 };
 

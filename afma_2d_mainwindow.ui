@@ -22,28 +22,6 @@
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="AFMA_2D_ImageDisplay" name="graphicsView">
-       <property name="mouseTracking">
-        <bool>true</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOn</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOn</enum>
-       </property>
-       <property name="sizeAdjustPolicy">
-        <enum>QAbstractScrollArea::AdjustToContents</enum>
-       </property>
-       <property name="resizeAnchor">
-        <enum>QGraphicsView::AnchorViewCenter</enum>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="OpenGLAnnotationWindow" name="annotationWidget">
        <property name="sizePolicy">
@@ -216,14 +194,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>AFMA_2D_ImageDisplay</class>
-   <extends>QGraphicsView</extends>
-   <header>afma_2d_imagedisplay.h</header>
-   <slots>
-    <signal>mousepressed(QMouseEvent*e)</signal>
-   </slots>
-  </customwidget>
   <customwidget>
    <class>OpenGLWindow</class>
    <extends>QOpenGLWidget</extends>

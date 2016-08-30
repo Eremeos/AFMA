@@ -17,9 +17,7 @@ void FacemodelCandide::initializeVertices()
     vec_vertices.push_back(glm::vec3(0.174000f    ,0.800000f    ,-0.024000f ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,0.539000f    ,0.085000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,0.278000f    ,0.107000f  ));
-    //
     vec_vertices.push_back(glm::vec3(0.000000f    ,0.213000f    ,0.085000f  ));
-    //
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.222000f   ,0.210000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.265000f   ,0.124000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.417000f   ,0.142000f  ));
@@ -50,19 +48,15 @@ void FacemodelCandide::initializeVertices()
     vec_vertices.push_back(glm::vec3(0.174000f    ,-0.809000f   ,0.000000f  ));
     vec_vertices.push_back(glm::vec3(0.043000f    ,-0.396000f   ,0.150000f  ));
     vec_vertices.push_back(glm::vec3(-0.174000f   ,0.800000f    ,-0.024000f ));
-    //
     vec_vertices.push_back(glm::vec3(0.000000f    ,0.539000f    ,0.085000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,0.278000f    ,0.107000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,0.213000f    ,0.085000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.222000f   ,0.210000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.265000f   ,0.124000f  ));
-    //
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.461000f   ,0.124000f  ));
-    //
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.526000f   ,0.150000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.591000f   ,0.107000f  ));
     vec_vertices.push_back(glm::vec3(0.000000f    ,-0.852000f   ,0.063000f  ));
-    //
     vec_vertices.push_back(glm::vec3(-0.217000f   ,1.039000f    ,-0.371000f ));
     vec_vertices.push_back(glm::vec3(-0.457000f   ,0.909000f    ,-0.328000f ));
     vec_vertices.push_back(glm::vec3(-0.435000f   ,0.626000f    ,-0.111000f ));
@@ -133,12 +127,16 @@ void FacemodelCandide::initializeVertices()
     vec_vertices.push_back(glm::vec3(0.120000f    ,-0.265000f   ,0.100000f  ));
     vec_vertices.push_back(glm::vec3(-0.120000f   ,-0.265000f   ,0.100000f  ));
 
-
+    vec_changed = vec_vertices;
 
     for(int i = 0; i < vec_vertices.size(); ++i)
     {
         vec_vertices[i].y -= 0.1f;
+        vec_vertices_base.push_back(vec_vertices[i]);
     }
+
+
+
 
 
 
@@ -147,7 +145,7 @@ void FacemodelCandide::initializeVertices()
 void FacemodelCandide::initializeColor()
 {
     vec_color.push_back(glm::vec4(1,0,0,0.3f));
-   for(int i = 0; i < vec_vertices.size()-1; ++i)
+   for(int i = 0; i < vec_vertices.size(); ++i)
    {
        vec_color.push_back(glm::vec4(1,1,1,0.3f));
    }
@@ -339,4 +337,57 @@ void FacemodelCandide::initializeIndices()
     vec_indices.push_back(glm::vec3(22  ,72  ,68 ));
     vec_indices.push_back(glm::vec3(22  ,107 ,72 ));
     vec_indices.push_back(glm::vec3(107 ,23  ,72 ));
+
+    for(int i = 0; i < vec_indices.size(); ++i)
+    {
+        vec_indices_ushort.push_back(vec_indices[i].x);
+        vec_indices_ushort.push_back(vec_indices[i].y);
+        vec_indices_ushort.push_back(vec_indices[i].z);
+    }
+
+}
+
+void FacemodelCandide::upperLipraiser()
+{
+    std::vector<short> reference;
+    std::vector<glm::vec3> lipraiser;
+
+    reference.push_back(7);
+    reference.push_back(33);
+    reference.push_back(66);
+    reference.push_back(79);
+    reference.push_back(80);
+    reference.push_back(81);
+    reference.push_back(82);
+    reference.push_back(87);
+    reference.push_back(88);
+    reference.push_back(89);
+
+
+    lipraiser.push_back(glm::vec3(0.000000,    0.086957,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.065217,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.086957,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.065217,    0.021739));
+    lipraiser.push_back(glm::vec3(0.000000,    0.020000,    0.000000));
+    lipraiser.push_back(glm::vec3(0.000000,    0.020000,    0.000000));
+
+    for(int i = 0; i < lipraiser.size(); ++i)
+    {
+        lipraiser[i].x /=100;
+        lipraiser[i].y /=100;
+        lipraiser[i].z /=100;
+    }
+
+    for(int i = 0; i < reference.size(); ++i)
+    {
+        vec_changed[reference[i]].x += lipraiser[i].x;
+        vec_changed[reference[i]].y += lipraiser[i].y;
+        vec_changed[reference[i]].z += lipraiser[i].z;
+
+    }
+
 }

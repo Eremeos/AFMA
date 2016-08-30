@@ -12,6 +12,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
+#include <openglwindow.h>
 
 class OpenGLAnnotationWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -25,13 +26,10 @@ public:
     int numberOfVertices;
     int numberOfIndices;
     std::vector<glm::vec3> vec_vertices;
-
+    OpenGLWindow *ogl;
     GLuint programID;
 
-    GLuint myBufferID;
-    GLuint colorbuffer;
 
-    GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
 
     void draw();
     void next();
@@ -46,6 +44,7 @@ public:
     std::vector<glm::vec2> tex;
     QOpenGLShaderProgram m_shader;
     QString filepath;
+    QImage textureImage;
 
 
 signals:

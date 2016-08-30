@@ -13,6 +13,7 @@
 #include <QMouseEvent>
 #include "afma_2d_imagedisplay.h"
 #include <QPointF>
+#include <glm/glm.hpp>
 
 namespace Ui {
 class AFMA_2D_MainWindow;
@@ -35,21 +36,24 @@ public:
     FaceModel2D m_FaceModel;
     double m_scale = 1.0;
     int m_initial_Slider_position = 50;
-    std::vector<QPointF> vec_points;
-    std::vector<QPointF> new_vec_points;
+    std::vector<glm::vec3> vec_points;
+    std::vector<glm::vec3> new_vec_points;
 
+    QImage Texture;
+
+    int changeCount = 0;
 
 
 
 private slots:
 
-    void drawAnnotation(std::vector<QPointF> pts);
+    void drawAnnotation(std::vector<glm::vec3> pts);
 
     void debugMessage(QString str);
 
     void updateAnnotation();
 
-    void updateAnnotation(std::vector<QPointF> pts);
+    void updateAnnotation(std::vector<glm::vec3> pts);
 
     void clearAnnotation();
 
@@ -57,7 +61,7 @@ private slots:
 
     void on_psBtn_SetPixel_clicked();
 
-    void setDisplayImage(cv::Mat newImage, std::vector<QPointF> annotation_points);
+    void setDisplayImage(cv::Mat newImage, std::vector<glm::vec3> annotation_points);
     void setDisplayImage(cv::Mat newImage);
 
     void on_psButton_Initial_Image_clicked();
@@ -83,6 +87,7 @@ private slots:
     void on_psBtn_Draw3D_clicked();
 
     void on_psBtn_NextPoint_clicked();
+
 
 private:
     Ui::AFMA_2D_MainWindow *ui;

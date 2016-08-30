@@ -23,6 +23,7 @@ public:
     bool start;
     void draw();
     void next();
+    void undoAnnotation();
     bool bdraw = false;
     std::vector<QPointF> vec_pt;
     int numberOfVertices;
@@ -43,8 +44,15 @@ public:
     QOpenGLVertexArrayObject VAO;
     QOpenGLVertexArrayObject drawing_VAO;
     QOpenGLBuffer VBO;
-    QOpenGLBuffer VBO2;
+    QOpenGLBuffer VBOColor;
+    QOpenGLBuffer IBO;
+    QOpenGLBuffer VBOTexCords;
     QOpenGLShaderProgram m_shader;
+    QImage textureImage;
+    bool line = false;
+    GLuint VertexBufferId;
+    GLuint elementbuffer;
+    int counter = 0;
 
 signals:
 
