@@ -3,6 +3,7 @@
 
 #include <glm/glm.hpp>
 #include <vector>
+#include <facecomponent.h>
 
 class FacemodelCandide
 {
@@ -19,10 +20,14 @@ public:
     std::vector<glm::vec3> vec_indices;
     std::vector<unsigned short> vec_indices_ushort;
 
-    struct lefteye{
-        std::vector<short> referencePoint;
-        std::vector<glm::vec3> vertice;
-    };
+    FaceComponent leftEyebrow;
+    FaceComponent rightEyebrow;
+    FaceComponent leftEye;
+    FaceComponent rightEye;
+    FaceComponent upperLip;
+    FaceComponent lowerLip;
+
+    void setFaceComponents();
 
     void upperLipraiser();
 

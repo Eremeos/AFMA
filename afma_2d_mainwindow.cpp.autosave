@@ -132,12 +132,8 @@ void AFMA_2D_MainWindow::on_psBtn_SetPixel_clicked()
          for(int i = 0; i < ui->annotationWidget->vec_vertices.size(); ++i)
         {
 
-
-
         ui->openGLWidget->model.vec_vertices[changeCount].x = ui->annotationWidget->vec_vertices[changeCount].x;
         ui->openGLWidget->model.vec_vertices[changeCount].y = ui->annotationWidget->vec_vertices[changeCount].y;
-           // ui->openGLWidget->model.vec_vertices[changeCount].x *= 0.9;
-          //  ui->openGLWidget->model.vec_vertices[changeCount].y *= 0.9;
 
             ++changeCount;
        }

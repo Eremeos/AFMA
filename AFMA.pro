@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     afma_2d_imagedisplay.cpp \
     openglwindow.cpp \
     facemodelcandide.cpp \
-    openglannotationwindow.cpp
+    openglannotationwindow.cpp \
+    facecomponent.cpp
 
 HEADERS  += afma_mainwindow.h \
     afma_2d_mainwindow.h \
@@ -34,7 +35,8 @@ HEADERS  += afma_mainwindow.h \
     openglwindow.h \
 	glm\vec3.hpp \
     facemodelcandide.h \
-    openglannotationwindow.h
+    openglannotationwindow.h \
+    facecomponent.h
 
 FORMS    += afma_mainwindow.ui \
     afma_2d_mainwindow.ui \

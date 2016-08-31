@@ -137,7 +137,7 @@ VBOColor.release();
 
         // Wrap texture coordinates by repeating
         // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-        texture->setWrapMode(QOpenGLTexture::Repeat);
+        texture->setWrapMode(QOpenGLTexture::ClampToEdge);
 
 
     // Give our vertices to OpenGL.
@@ -163,7 +163,7 @@ VBOColor.release();
 
     texture->bind();
 
-//glPolygonMode(GL_FRONT, GL_TRIANGLES);
+glPolygonMode(GL_FRONT, GL_TRIANGLES);
 
 glDrawElements(GL_TRIANGLES, 184*3, GL_UNSIGNED_SHORT, (void*)0);
 VBO.release();

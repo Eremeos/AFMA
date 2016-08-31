@@ -1,5 +1,6 @@
 #include "facemodelcandide.h"
 #include <algorithm>
+#include <facecomponent.h>
 
 FacemodelCandide::FacemodelCandide()
 {
@@ -7,6 +8,7 @@ FacemodelCandide::FacemodelCandide()
 initializeVertices();
 initializeIndices();
 initializeColor();
+
 
 
 }
@@ -347,6 +349,19 @@ void FacemodelCandide::initializeIndices()
 
 }
 
+void FacemodelCandide::setFaceComponents()
+{
+    rightEyebrow.vec_reference_point.push_back(48);
+    rightEyebrow.vec_reference_point.push_back(49);
+    rightEyebrow.vec_reference_point.push_back(50);
+    rightEyebrow.vec_reference_point.push_back(51);
+
+    leftEyebrow.vec_reference_point.push_back(15);
+    leftEyebrow.vec_reference_point.push_back(16);
+    leftEyebrow.vec_reference_point.push_back(17);
+    leftEyebrow.vec_reference_point.push_back(18);
+}
+
 void FacemodelCandide::upperLipraiser()
 {
     std::vector<short> reference;
@@ -384,9 +399,9 @@ void FacemodelCandide::upperLipraiser()
 
     for(int i = 0; i < reference.size(); ++i)
     {
-        vec_changed[reference[i]].x += lipraiser[i].x;
-        vec_changed[reference[i]].y += lipraiser[i].y;
-        vec_changed[reference[i]].z += lipraiser[i].z;
+      //  vec_changed[reference[i]].x += lipraiser[i].x;
+    vec_changed[reference[i]].y -= lipraiser[i].y;
+     //   vec_changed[reference[i]].z += lipraiser[i].z;
 
     }
 
