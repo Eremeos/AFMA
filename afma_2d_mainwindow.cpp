@@ -11,6 +11,7 @@
 #include <QXmlStreamReader>
 #include <iostream>
 #include <algorithm>
+#include <QMessageBox>
 
 AFMA_2D_MainWindow::AFMA_2D_MainWindow(QWidget *parent) :
     QDialog(parent),
@@ -40,47 +41,11 @@ void AFMA_2D_MainWindow::debugMessage(QString str)
     ui->lbl_Debug->setText(str);
 }
 
-void AFMA_2D_MainWindow::updateAnnotation()
-{
-    //std::vector<QPointF> newPoints = ui->graphicsView->vec_pt;
-    std::vector<glm::vec3> newPoints = ui->annotationWidget->vec_vertices;
-    for(unsigned int i = 0; i < newPoints.size(); ++i)
-    {
-
-      if(std::find(vec_points.begin(), vec_points.end(), newPoints[i]) == vec_points.end())
-      {
-        new_vec_points.push_back(newPoints[i]);
-
-        glm::vec3 help = newPoints[i];
-        help.x =help.x/m_scale;
-        help.y = help.y/m_scale;
-
-        if(std::find(vec_points.begin(), vec_points.end(), help) == vec_points.end())
-         {
-             vec_points.push_back(help);
-            // ui->graphicsView->vec_pt[i] = help;
-             ui->annotationWidget->vec_vertices[i] = help;
-
-         }
-      }
-    }
 
 
-}
-
-void AFMA_2D_MainWindow::updateAnnotation(std::vector<glm::vec3> pts)
-{
-    vec_points = pts;
-    //ui->graphicsView->vec_pt = pts;
-    ui->annotationWidget->vec_vertices = pts;
-    new_vec_points = pts;
-}
 
 void AFMA_2D_MainWindow::clearAnnotation()
 {
-    vec_points.clear();
-   // ui->graphicsView->vec_pt.clear();
-    new_vec_points.clear();
     ui->annotationWidget->vec_vertices.clear();
     ui->annotationWidget->update();
 }
@@ -101,12 +66,6 @@ void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
        return;
    }
 
-    m_image = cv::imread(m_fileName.toStdString());
-
-
-    m_image.copyTo(m_morphed_Image);
-
-    setDisplayImage(m_image);
     ui->sld_Scale->setSliderPosition(m_initial_Slider_position);
     Texture.load(m_fileName);
     ui->annotationWidget->textureImage = Texture;
@@ -116,89 +75,14 @@ void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
 
 }
 
-void AFMA_2D_MainWindow::on_psBtn_SetPixel_clicked()
-{
-    if(ui->openGLWidget->line == true)
-    {
-    ui->openGLWidget->line = false;
-    }
-    else
-    {
-    ui->openGLWidget->line = true;
-    if(changeCount < ui->annotationWidget->vec_vertices.size())
-        {
-            ui->openGLWidget->model.vec_changed = ui->annotationWidget->vec_vertices;
-
-         for(int i = 0; i < ui->annotationWidget->vec_vertices.size(); ++i)
-        {
-
-
-
-        ui->openGLWidget->model.vec_vertices[changeCount].x = ui->annotationWidget->vec_vertices[changeCount].x;
-        ui->openGLWidget->model.vec_vertices[changeCount].y = ui->annotationWidget->vec_vertices[changeCount].y;
-           // ui->openGLWidget->model.vec_vertices[changeCount].x *= 0.9;
-          //  ui->openGLWidget->model.vec_vertices[changeCount].y *= 0.9;
-
-            ++changeCount;
-       }
-    }
-
-    }
-    debugMessage(QString::number(ui->openGLWidget->model.vec_vertices.size()));
-    ui->openGLWidget->update();
-}
-
-void AFMA_2D_MainWindow::setDisplayImage(cv::Mat newImage, std::vector<glm::vec3> annotation_points)
-{
-/*    QImage img = Utility2D::fromOpenCVToQImage(newImage);
-    m_scene->clear();
-    QPixmap p_Image = QPixmap::fromImage(img);
-    m_scene->addPixmap(p_Image);
-    m_scene->setSceneRect(p_Image.rect());
-    ui->graphicsView->setScene(m_scene);
-    newImage.copyTo(m_displayed_Image);
-    drawAnnotation(annotation_points);
-*/
-}
-
-void AFMA_2D_MainWindow::setDisplayImage(cv::Mat newImage)
-{
- /*   updateAnnotation();
-    QImage img = Utility2D::fromOpenCVToQImage(newImage);
-    m_scene->clear();
-    QPixmap p_Image = QPixmap::fromImage(img);
-    m_scene->addPixmap(p_Image);
-    m_scene->setSceneRect(p_Image.rect());
-    ui->graphicsView->setScene(m_scene);
-    newImage.copyTo(m_displayed_Image);
-    drawAnnotation(new_vec_points); */
-}
-
-void AFMA_2D_MainWindow::on_psButton_Initial_Image_clicked()
-{
-    setDisplayImage(m_image);
-    m_image.copyTo(m_morphed_Image);
-    ui->sld_Scale->setSliderPosition(m_initial_Slider_position);
-}
-
-void AFMA_2D_MainWindow::on_psBtn_FaceDet_clicked()
-{
-    clearAnnotation();
-    Utility2D::generateFaceModel(m_FaceModel, m_displayed_Image);
-    m_morphed_Image = m_displayed_Image(m_FaceModel.getFace().getComponent());
-    ui->sld_Scale->setSliderPosition(m_initial_Slider_position);
-    setDisplayImage(m_morphed_Image);
-
-}
-
 
 void AFMA_2D_MainWindow::on_sld_Scale_sliderMoved(int position)
 {
     debugMessage(QString::number(position));
-    for(int i = 0; i < ui->openGLWidget->model.vec_vertices.size(); ++i)
+    for(unsigned int i = 0; i < ui->openGLWidget->model.vec_vertices.size(); ++i)
     {
-    ui->openGLWidget->model.vec_vertices[i].x *= 0.9;
-    ui->openGLWidget->model.vec_vertices[i].y *= 0.9;
+    ui->openGLWidget->model.vec_vertices[i].x *= 0.9f;
+    ui->openGLWidget->model.vec_vertices[i].y *= 0.9f;
     }
     ui->openGLWidget->update();
 }
@@ -217,7 +101,7 @@ void AFMA_2D_MainWindow::on_psBtn_SaveAnnotation_clicked()
       QFile file(save_filename);
       save_filename.chop(4);
 
-    //  Utility2D::fromOpenCVToQImage(m_displayed_Image).save(save_filename+".jpg");
+
     Texture.save(save_filename+".jpg");
 
 
@@ -254,6 +138,7 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
 {
         clearAnnotation();
 
+
         QString load_filename = QFileDialog::getOpenFileName(this,
                                        tr("Open Xml"), ".",
                                        tr("Xml files (*.xml)"));
@@ -269,7 +154,6 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
              << ": " << qPrintable(file.errorString())
              << std::endl;
         }
-        vec_points.clear();
         QString s;
         QXmlStreamReader reader(&file);
 
@@ -293,7 +177,7 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
                     {
                         if(reader.name() == "Annotation")
                         {   int i = 0;
-                            vec_points.clear();
+
                             while(reader.readNextStartElement())
                             {
                                 if(reader.name() == "Point" +QString::number(i))
@@ -319,10 +203,9 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
                                             reader.skipCurrentElement();
                                         }
                                     }
-                                    vec_points.push_back(pt);
+
                                     ui->annotationWidget->vec_vertices.push_back(pt);
-                                    new_vec_points.push_back(pt);
-                                    debugMessage(QString::number(vec_points.size()));
+                                    debugMessage(QString::number(ui->annotationWidget->vec_vertices.size()));
                                 }
                                 else
                                 {
@@ -353,11 +236,11 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
         ui->openGLWidget->textureImage = Texture;
         ui->sld_Scale->setSliderPosition(m_initial_Slider_position);
 
-        for(int i = 0; i < ui->annotationWidget->vec_vertices.size(); ++i)
+        for(unsigned int i = 0; i < ui->annotationWidget->vec_vertices.size(); ++i)
         {
             ui->openGLWidget->next();
         }
-        on_psBtn_Draw3D_clicked();
+        ui->openGLWidget->draw();
         debugMessage(QString::number(ui->openGLWidget->model.vec_vertices.size()) +" " + QString::number(ui->annotationWidget->vec_vertices.size()) +" " + QString::number(ui->openGLWidget->count));
 }
 
@@ -365,60 +248,40 @@ void AFMA_2D_MainWindow::on_psBtn_ClearAnnotation_clicked()
 {
     clearAnnotation();
     ui->openGLWidget->undoAnnotation();
+
     ui->openGLWidget->update();
-    setDisplayImage(m_displayed_Image);
-}
-
-void AFMA_2D_MainWindow::on_sld_Scale_sliderReleased()
-{
-  setDisplayImage(m_displayed_Image, new_vec_points);
 
 }
+
 
 void AFMA_2D_MainWindow::on_psBtn_UndoLastPoint_clicked()
 {
-    if(vec_points.size() > 0)
-    {
-    vec_points.pop_back();
-    updateAnnotation();
-    }
+
     if(ui->annotationWidget->vec_vertices.size() > 0)
     {
     ui->annotationWidget->vec_vertices.pop_back();
 
-    ui->openGLWidget->model.vec_color[ui->openGLWidget->count] = glm::vec4(1,1,1,0.1);
+    ui->openGLWidget->model.vec_color[ui->openGLWidget->count] = glm::vec4(1,1,1,0.3f);
       ui->openGLWidget->count--;
     ui->openGLWidget->model.vec_color[ui->openGLWidget->count] = glm::vec4(1,0,0,1);
     ui->openGLWidget->update();
     }
-    setDisplayImage(m_displayed_Image);
+
 
     ui->annotationWidget->update();
 
 }
 
-void AFMA_2D_MainWindow::on_sld_Scale_sliderPressed()
-{
-    updateAnnotation();
-    setDisplayImage(m_displayed_Image, new_vec_points);
-}
-
-
-
-void AFMA_2D_MainWindow::on_psBtn_Draw3D_clicked()
-{
-    ui->openGLWidget->draw();
-}
 
 void AFMA_2D_MainWindow::on_psBtn_NextPoint_clicked()
 {
 
 
-        ui->openGLWidget->model.vec_changed[16].y -= 0.001;
-       ui->openGLWidget->model.vec_changed[18].y -= 0.001;
+        ui->openGLWidget->model.vec_changed[16].y -= 0.001f;
+        ui->openGLWidget->model.vec_changed[18].y -= 0.001f;
 
-        ui->openGLWidget->model.vec_changed[49].y -= 0.001;
-        ui->openGLWidget->model.vec_changed[51].y -= 0.001;
+        ui->openGLWidget->model.vec_changed[49].y -= 0.001f;
+        ui->openGLWidget->model.vec_changed[51].y -= 0.001f;
 
 
 
@@ -428,3 +291,39 @@ void AFMA_2D_MainWindow::on_psBtn_NextPoint_clicked()
 }
 
 
+
+void AFMA_2D_MainWindow::on_psBtn_GenerateModel_clicked()
+{
+    if(ui->openGLWidget->line == true)
+    {
+    ui->openGLWidget->line = false;
+    }
+    else
+    {
+    ui->openGLWidget->line = true;
+    if(changeCount < ui->annotationWidget->vec_vertices.size())
+        {
+            ui->openGLWidget->model.vec_changed = ui->annotationWidget->vec_vertices;
+
+         for(unsigned int i = 0; i < ui->annotationWidget->vec_vertices.size(); ++i)
+        {
+
+        ui->openGLWidget->model.vec_vertices[changeCount].x = ui->annotationWidget->vec_vertices[changeCount].x;
+        ui->openGLWidget->model.vec_vertices[changeCount].y = ui->annotationWidget->vec_vertices[changeCount].y;
+
+            ++changeCount;
+       }
+    }
+
+    }
+    debugMessage(QString::number(ui->openGLWidget->model.vec_vertices.size()));
+    ui->openGLWidget->update();
+}
+
+void AFMA_2D_MainWindow::on_psBtn_AnnotationHelp_clicked()
+{
+    QMessageBox *mb = new QMessageBox();
+
+    mb->setText(ui->openGLWidget->model.vec_annotationText[ui->openGLWidget->count]);
+    mb->show();
+}

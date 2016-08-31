@@ -76,23 +76,23 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="psButton_Initial_Image">
+      <widget class="QPushButton" name="psBtn_LoadProject">
        <property name="text">
-        <string>Initial Image</string>
+        <string>Load Project</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="psBtn_SetPixel">
+      <widget class="QPushButton" name="psBtn_SaveAnnotation">
        <property name="text">
-        <string>SetPixel</string>
+        <string>Save Project</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="psBtn_FaceDet">
+      <widget class="QPushButton" name="psBtn_GenerateModel">
        <property name="text">
-        <string>Crop Face</string>
+        <string>Generate Model</string>
        </property>
       </widget>
      </item>
@@ -100,20 +100,6 @@
       <widget class="QPushButton" name="psBtn_ClearAnnotation">
        <property name="text">
         <string>Clear Annotation</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="psBtn_SaveAnnotation">
-       <property name="text">
-        <string>Save Annotation</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="psBtn_LoadProject">
-       <property name="text">
-        <string>Load Project</string>
        </property>
       </widget>
      </item>
@@ -132,9 +118,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="psBtn_Draw3D">
+      <widget class="QPushButton" name="psBtn_AnnotationHelp">
        <property name="text">
-        <string>Draw 3D</string>
+        <string>Annotation Help</string>
        </property>
       </widget>
      </item>
@@ -167,6 +153,9 @@
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="cb_FaceComponents"/>
+     </item>
+     <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -197,12 +186,15 @@
   <customwidget>
    <class>OpenGLWindow</class>
    <extends>QOpenGLWidget</extends>
-   <header>openglwindow.h</header>
+   <header location="global">openglwindow.h</header>
   </customwidget>
   <customwidget>
    <class>OpenGLAnnotationWindow</class>
    <extends>QOpenGLWidget</extends>
-   <header location="global">openglannotationwindow.h</header>
+   <header>openglannotationwindow.h</header>
+   <slots>
+    <signal>clicked()</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -8,7 +8,7 @@ FacemodelCandide::FacemodelCandide()
 initializeVertices();
 initializeIndices();
 initializeColor();
-
+initializeAnnotationText();
 
 
 }
@@ -131,7 +131,7 @@ void FacemodelCandide::initializeVertices()
 
     vec_changed = vec_vertices;
 
-    for(int i = 0; i < vec_vertices.size(); ++i)
+    for(unsigned int i = 0; i < vec_vertices.size(); ++i)
     {
         vec_vertices[i].y -= 0.1f;
         vec_vertices_base.push_back(vec_vertices[i]);
@@ -147,9 +147,10 @@ void FacemodelCandide::initializeVertices()
 void FacemodelCandide::initializeColor()
 {
     vec_color.push_back(glm::vec4(1,0,0,0.3f));
-   for(int i = 0; i < vec_vertices.size(); ++i)
+   for(unsigned int i = 0; i < vec_vertices.size(); ++i)
    {
        vec_color.push_back(glm::vec4(1,1,1,0.3f));
+       vec_color_base.push_back(glm::vec4(1,1,1,0.3f));
    }
 }
 
@@ -340,13 +341,130 @@ void FacemodelCandide::initializeIndices()
     vec_indices.push_back(glm::vec3(22  ,107 ,72 ));
     vec_indices.push_back(glm::vec3(107 ,23  ,72 ));
 
-    for(int i = 0; i < vec_indices.size(); ++i)
+    for(unsigned int i = 0; i < vec_indices.size(); ++i)
     {
         vec_indices_ushort.push_back(vec_indices[i].x);
         vec_indices_ushort.push_back(vec_indices[i].y);
         vec_indices_ushort.push_back(vec_indices[i].z);
     }
 
+}
+
+void FacemodelCandide::initializeAnnotationText()
+{
+    vec_annotationText.push_back("Top of skull");
+    vec_annotationText.push_back("Middle border between hair and forehead");
+    vec_annotationText.push_back("Middle of forehead");
+    vec_annotationText.push_back("Midpoint between eyebrows");
+    vec_annotationText.push_back("Not used (replaced by 77 and 78 in CANDIDE-1)");
+    vec_annotationText.push_back("Nose tip");
+    vec_annotationText.push_back("Bottom middle edge of nose");
+    vec_annotationText.push_back("Middle point of outer upper lip contour");
+    vec_annotationText.push_back("Middle point of outer lower lip contour");
+    vec_annotationText.push_back("Chin boss");
+    vec_annotationText.push_back("Bottom of the chin");
+    vec_annotationText.push_back("Left of top of skull");
+    vec_annotationText.push_back("Left of top of skull");
+    vec_annotationText.push_back("(Left border between hair and forehead)");
+    vec_annotationText.push_back("Left side of skull");
+    vec_annotationText.push_back("Outer corner of left eyebrow");
+    vec_annotationText.push_back("Uppermost point of the left eyebrow");
+    vec_annotationText.push_back("Inner corner of left eyebrow");
+    vec_annotationText.push_back("Lower contour of the left eyebrow, straight under 16");
+    vec_annotationText.push_back("Center of upper outer left eyelid");
+    vec_annotationText.push_back("Outer corner of left eye");
+    vec_annotationText.push_back("Center of upper inner left eyelid");
+    vec_annotationText.push_back("Center of lower inner left eyelid");
+    vec_annotationText.push_back("Inner corner of left eye");
+    vec_annotationText.push_back("Center of lower outer left eyelid");
+    vec_annotationText.push_back("Left nose border");
+    vec_annotationText.push_back("Left nostril outer border");
+    vec_annotationText.push_back("Left cheek bone");
+    vec_annotationText.push_back("Inner contact point between left ear and face");
+    vec_annotationText.push_back("Upper contact point between left ear and face");
+    vec_annotationText.push_back("Left corner of jaw bone");
+    vec_annotationText.push_back("Left corner of outer lip contour");
+    vec_annotationText.push_back("Chin left corner");
+    vec_annotationText.push_back("Uppermost point of left outer lip contour");
+    vec_annotationText.push_back("(Middle border between hair and forehead)");
+    vec_annotationText.push_back("Not used (identical to 2)");
+    vec_annotationText.push_back("Not used (identical to 3)");
+    vec_annotationText.push_back("Not used (identical to 4)");
+    vec_annotationText.push_back("Not used (identical to 5)");
+    vec_annotationText.push_back("Not used (identical to 6)");
+    vec_annotationText.push_back("Middle point of inner lower lip contour");
+    vec_annotationText.push_back("Not used (identical to 8)");
+    vec_annotationText.push_back("Not used (identical to 9)");
+    vec_annotationText.push_back("Not used (identical to 10)");
+    vec_annotationText.push_back("Right of top of skull");
+    vec_annotationText.push_back("Right of top of skull");
+    vec_annotationText.push_back("Right border between hair and forehead)");
+    vec_annotationText.push_back("Right side of skull");
+    vec_annotationText.push_back("Outer corner of right eyebrow");
+    vec_annotationText.push_back("Uppermost point of the right eyebrow");
+    vec_annotationText.push_back("Inner corner of right eyebrow");
+    vec_annotationText.push_back("Lower contour of the right eyebrow, straight under 49");
+    vec_annotationText.push_back("Center of upper outer right eyelid");
+    vec_annotationText.push_back("Outer corner of right eye");
+    vec_annotationText.push_back("Center of upper inner right eyelid");
+    vec_annotationText.push_back("Center of lower inner right eyelid");
+    vec_annotationText.push_back("Inner corner of right eye");
+    vec_annotationText.push_back("Center of lower outer right eyelid");
+    vec_annotationText.push_back("Right nose border");
+    vec_annotationText.push_back("Right nostril border");
+    vec_annotationText.push_back("Right cheek bone");
+    vec_annotationText.push_back("Lower contact point between right ear and face");
+    vec_annotationText.push_back("Upper contact point between right ear and face");
+    vec_annotationText.push_back("Right corner of jaw bone");
+    vec_annotationText.push_back("Right corner of outer lip contour");
+    vec_annotationText.push_back("Chin right corner");
+    vec_annotationText.push_back("Uppermost point of right outer lip contour");
+    vec_annotationText.push_back("Left iris, outer upper corner of bounding (square) box");
+    vec_annotationText.push_back("Left iris, outer lower corner of bounding (square) box");
+    vec_annotationText.push_back("Right iris, outer upper corner of bounding (square) box");
+    vec_annotationText.push_back("Right iris, outer lower corner of bounding (square) box");
+    vec_annotationText.push_back("Left iris, inner upper corner of bounding (square) box");
+    vec_annotationText.push_back("Left iris, inner lower corner of bounding (square) box");
+    vec_annotationText.push_back("Right iris, inner upper corner of bounding (square) box");
+    vec_annotationText.push_back("Right iris, inner lower corner of bounding (square) box");
+    vec_annotationText.push_back("Left side of nose tip");
+    vec_annotationText.push_back("Right side of nose tip");
+    vec_annotationText.push_back("Left upper edge of nose bone");
+    vec_annotationText.push_back("Right upper edge of nose bone");
+    vec_annotationText.push_back("Midpoint between FFP 8.4 and 8.1 on outer upper lip contour");
+    vec_annotationText.push_back("Midpoint between FFP 8.3 and 8.1 on outer upper lip contour");
+    vec_annotationText.push_back("Midpoint between FFP 2.2 and 2.5 on the inner upper lip contour");
+    vec_annotationText.push_back("Midpoint between FFP 2.2 and 2.4 on the inner upper lip contour");
+    vec_annotationText.push_back("Midpoint between FFP 2.3 and 2.5 on the inner lower lip contour");
+    vec_annotationText.push_back("Midpoint between FFP 2.3 and 2.4 on the inner lower lip contour");
+    vec_annotationText.push_back("Midpoint between FFP 8.4 and 8.2 on outer lower lip contour");
+    vec_annotationText.push_back("Midpoint between FFP 8.3 and 8.2 on outer lower lip contour");
+    vec_annotationText.push_back("Middle point of inner upper lip contour");
+    vec_annotationText.push_back("Left corner of inner lip contour");
+    vec_annotationText.push_back("Right corner of inner lip contour");
+    vec_annotationText.push_back("Center of the left cheek");
+    vec_annotationText.push_back("Center of the right cheek");
+    vec_annotationText.push_back("Left lower edge of nose bone");
+    vec_annotationText.push_back("Right lower edge of nose bone");
+    vec_annotationText.push_back("Middle lower edge of nose bone (or nose bump)");
+    vec_annotationText.push_back("Outer upper edge of left upper eyelid");
+    vec_annotationText.push_back("Outer upper edge of right upper eyelid");
+    vec_annotationText.push_back("Outer lower edge of left upper eyelid");
+    vec_annotationText.push_back("Outer lower edge of right upper eyelid");
+    vec_annotationText.push_back("Outer upper edge of left lower eyelid");
+    vec_annotationText.push_back("Outer upper edge of right lower eyelid");
+    vec_annotationText.push_back("Outer lower edge of left lower eyelid");
+    vec_annotationText.push_back("Outer lower edge of right lower eyelid");
+    vec_annotationText.push_back("Inner upper edge of left upper eyelid");
+    vec_annotationText.push_back("Inner upper edge of right upper eyelid");
+    vec_annotationText.push_back("Inner lower edge of left upper eyelid");
+    vec_annotationText.push_back("Inner lower edge of right upper eyelid");
+    vec_annotationText.push_back("Inner upper edge of left lower eyelid");
+    vec_annotationText.push_back("Inner upper edge of right lower eyelid");
+    vec_annotationText.push_back("Inner lower edge of left lower eyelid");
+    vec_annotationText.push_back("Inner lower edge of right lower eyelid");
+    vec_annotationText.push_back("Bottom left edge of nose");
+    vec_annotationText.push_back("Bottom right edge of nose");
 }
 
 void FacemodelCandide::setFaceComponents()
@@ -390,14 +508,14 @@ void FacemodelCandide::upperLipraiser()
     lipraiser.push_back(glm::vec3(0.000000,    0.020000,    0.000000));
     lipraiser.push_back(glm::vec3(0.000000,    0.020000,    0.000000));
 
-    for(int i = 0; i < lipraiser.size(); ++i)
+    for(unsigned int i = 0; i < lipraiser.size(); ++i)
     {
         lipraiser[i].x /=100;
         lipraiser[i].y /=100;
         lipraiser[i].z /=100;
     }
 
-    for(int i = 0; i < reference.size(); ++i)
+    for(unsigned int i = 0; i < reference.size(); ++i)
     {
       //  vec_changed[reference[i]].x += lipraiser[i].x;
     vec_changed[reference[i]].y -= lipraiser[i].y;

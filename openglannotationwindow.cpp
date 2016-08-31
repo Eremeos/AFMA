@@ -158,7 +158,7 @@ void OpenGLAnnotationWindow::paintGL()
 
     glBegin(GL_POINTS);
 
-        for(int i = 0; i < vec_vertices.size();++i)
+        for(unsigned int i = 0; i < vec_vertices.size();++i)
         {
            glColor3f(1,0,0);
            glVertex3f(vec_vertices[i].x,vec_vertices[i].y,vec_vertices[i].z);

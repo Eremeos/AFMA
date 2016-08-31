@@ -28,14 +28,13 @@ public:
     std::vector<QPointF> vec_pt;
     int numberOfVertices;
     int numberOfIndices;
-    int count = 0;
+    unsigned int count = 0;
     FacemodelCandide model;
     GLuint programID;
 
     GLuint myBufferID;
     GLuint colorbuffer;
 
-    GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
 
     void initializeVertices();
     void initializeIndices();
@@ -52,7 +51,7 @@ public:
     bool line = false;
     GLuint VertexBufferId;
     GLuint elementbuffer;
-    int counter = 0;
+
 
 signals:
 

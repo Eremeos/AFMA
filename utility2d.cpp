@@ -85,31 +85,7 @@ cv::Mat Utility2D::fromQImageToOpenCV(QImage img)
     return result;
 }
 
-void Utility2D::drawRect(cv::Mat newImage, FaceComponent2D component)
-{
-        cv::Rect rec = component.getComponent();
-        cv::rectangle(newImage, rec,cv::Scalar(0, 0, 255 ), 1, 8, 0 );
 
-}
-
-void Utility2D::drawEllipse(cv::Mat newImage, FaceComponent2D component)
-{
-        cv::Rect rec = component.getComponent();
-        cv::Point center( rec.x + rec.width*0.5, rec.y + rec.height*0.5 );
-        cv::ellipse( newImage, center, cv::Size( rec.width*0.5, rec.height*0.5), 0, 0, 360, cv::Scalar( 255, 0, 0 ), 1, 8, 0 );
-
-}
-
-void Utility2D::generateFaceModel(FaceModel2D &faceModel, cv::Mat ima)
-{
-    std::vector<cv::Rect> faces = Utility2D::findFace(ima);
-    std::vector<cv::Rect> eyes = Utility2D::findEye(ima);
-    std::vector<cv::Rect> mouth = Utility2D::findMouth(ima);
-    faceModel.setFace(faces[0]);
-    faceModel.setLeftEye(eyes[0]);
-    faceModel.setRightEye(eyes[1]);
-    faceModel.setMouth(mouth[0]);
-}
 
 void Utility2D::convert(std::vector<QPointF> &vec_points, std::vector<glm::vec3> &vec_vertices, cv::Mat ima)
 {
@@ -129,7 +105,7 @@ void Utility2D::convert(std::vector<QPointF> &vec_points, std::vector<glm::vec3>
     }
  } */
 
- for(int i = 0; i < vec_points.size();++i)
+ for(unsigned int i = 0; i < vec_points.size();++i)
  {
      vec_vertices[i].x = (vec_points[i].x()/width *2)-1;
      vec_vertices[i].y = ((vec_points[i].y()/height*(-2))+1);
