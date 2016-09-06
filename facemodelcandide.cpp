@@ -9,8 +9,8 @@ initializeVertices();
 initializeIndices();
 initializeColor();
 initializeAnnotationText();
-
-
+initializeDoubledPoints();
+initializeFaceComponents();
 }
 
 void FacemodelCandide::initializeVertices()
@@ -467,23 +467,146 @@ void FacemodelCandide::initializeAnnotationText()
     vec_annotationText.push_back("Bottom right edge of nose");
 }
 
-void FacemodelCandide::setFaceComponents()
+void FacemodelCandide::initializeDoubledPoints()
 {
+    vec_doubled_points.push_back(glm::vec2(35,2));
+    vec_doubled_points.push_back(glm::vec2(36,3));
+    vec_doubled_points.push_back(glm::vec2(37,4));
+    vec_doubled_points.push_back(glm::vec2(38,5));
+    vec_doubled_points.push_back(glm::vec2(39,6));
+    vec_doubled_points.push_back(glm::vec2(41,8));
+    vec_doubled_points.push_back(glm::vec2(42,9));
+    vec_doubled_points.push_back(glm::vec2(43,10));
+
+}
+
+void FacemodelCandide::initializeFaceComponents()
+{
+    FaceComponent rightEyebrow;
+    rightEyebrow.name = "rightEyebrow";
     rightEyebrow.vec_reference_point.push_back(48);
     rightEyebrow.vec_reference_point.push_back(49);
     rightEyebrow.vec_reference_point.push_back(50);
     rightEyebrow.vec_reference_point.push_back(51);
 
+    vec_faceComponents.push_back(rightEyebrow);
+
+    FaceComponent leftEyebrow;
+    leftEyebrow.name = "leftEyebrow";
     leftEyebrow.vec_reference_point.push_back(15);
     leftEyebrow.vec_reference_point.push_back(16);
     leftEyebrow.vec_reference_point.push_back(17);
     leftEyebrow.vec_reference_point.push_back(18);
+
+    vec_faceComponents.push_back(leftEyebrow);
+
+
+    FaceComponent leftEye;
+    leftEye.name = "leftEye";
+
+    leftEye.vec_reference_point.push_back(23);
+    leftEye.vec_reference_point.push_back(20);
+
+    leftEye.vec_reference_point.push_back(67);
+    leftEye.vec_reference_point.push_back(68);
+    leftEye.vec_reference_point.push_back(71);
+    leftEye.vec_reference_point.push_back(72);
+    leftEye.vec_reference_point.push_back(19);
+    leftEye.vec_reference_point.push_back(24);
+    leftEye.vec_reference_point.push_back(21);
+    leftEye.vec_reference_point.push_back(22);
+    leftEye.vec_reference_point.push_back(95);
+    leftEye.vec_reference_point.push_back(97);
+    leftEye.vec_reference_point.push_back(99);
+    leftEye.vec_reference_point.push_back(101);
+    leftEye.vec_reference_point.push_back(103);
+    leftEye.vec_reference_point.push_back(105);
+    leftEye.vec_reference_point.push_back(107);
+    leftEye.vec_reference_point.push_back(109);
+
+    vec_faceComponents.push_back(leftEye);
+
+    FaceComponent rightEye;
+    rightEye.name = "rightEye";
+
+    rightEye.vec_reference_point.push_back(56);
+    rightEye.vec_reference_point.push_back(53);
+    rightEye.vec_reference_point.push_back(69);
+    rightEye.vec_reference_point.push_back(70);
+    rightEye.vec_reference_point.push_back(73);
+    rightEye.vec_reference_point.push_back(74);
+    rightEye.vec_reference_point.push_back(52);
+    rightEye.vec_reference_point.push_back(54);
+    rightEye.vec_reference_point.push_back(55);
+    rightEye.vec_reference_point.push_back(57);
+    rightEye.vec_reference_point.push_back(96);
+    rightEye.vec_reference_point.push_back(98);
+    rightEye.vec_reference_point.push_back(100);
+    rightEye.vec_reference_point.push_back(102);
+    rightEye.vec_reference_point.push_back(104);
+    rightEye.vec_reference_point.push_back(106);
+    rightEye.vec_reference_point.push_back(108);
+    rightEye.vec_reference_point.push_back(110);
+
+
+    vec_faceComponents.push_back(rightEye);
+
+    FaceComponent lips;
+    lips.name = "lips";
+    lips.vec_reference_point.push_back(7);
+    lips.vec_reference_point.push_back(8);
+    lips.vec_reference_point.push_back(10);
+    lips.vec_reference_point.push_back(31);
+    lips.vec_reference_point.push_back(33);
+    lips.vec_reference_point.push_back(64);
+    lips.vec_reference_point.push_back(66);
+    lips.vec_reference_point.push_back(79);
+    lips.vec_reference_point.push_back(80);
+    lips.vec_reference_point.push_back(87);
+    lips.vec_reference_point.push_back(40);
+    lips.vec_reference_point.push_back(88);
+    lips.vec_reference_point.push_back(89);
+    lips.vec_reference_point.push_back(81);
+    lips.vec_reference_point.push_back(82);
+    lips.vec_reference_point.push_back(83);
+    lips.vec_reference_point.push_back(84);
+    lips.vec_reference_point.push_back(9);
+    lips.vec_reference_point.push_back(32);
+    lips.vec_reference_point.push_back(65);
+    lips.vec_reference_point.push_back(30);
+    lips.vec_reference_point.push_back(63);
+    lips.vec_reference_point.push_back(86);
+
+
+    vec_faceComponents.push_back(lips);
+
+
+
+
+
+
+
+
+
+}
+
+void FacemodelCandide::setFaceComponents()
+{
+
+    for(int i = 0; i < vec_faceComponents.size(); ++i)
+    {
+       for(int j = 0; j < vec_faceComponents[i].vec_reference_point.size(); ++j)
+       {
+           vec_faceComponents[i].vec_vertices.push_back(vec_vertices[vec_faceComponents[i].vec_reference_point[j]]);
+           vec_faceComponents[i].vec_name.push_back(vec_annotationText[vec_faceComponents[i].vec_reference_point[j]]);
+       }
+           vec_faceComponents[i].vec_moved = vec_faceComponents[i].vec_vertices;
+    }
 }
 
 void FacemodelCandide::upperLipraiser()
 {
-    std::vector<short> reference;
-    std::vector<glm::vec3> lipraiser;
+
 
     reference.push_back(7);
     reference.push_back(33);
@@ -510,16 +633,65 @@ void FacemodelCandide::upperLipraiser()
 
     for(unsigned int i = 0; i < lipraiser.size(); ++i)
     {
-        lipraiser[i].x /=100;
-        lipraiser[i].y /=100;
-        lipraiser[i].z /=100;
+
+     //   lipraiser[i].y /=100;
+
     }
 
     for(unsigned int i = 0; i < reference.size(); ++i)
     {
-      //  vec_changed[reference[i]].x += lipraiser[i].x;
-    vec_changed[reference[i]].y -= lipraiser[i].y;
-     //   vec_changed[reference[i]].z += lipraiser[i].z;
+
+    vec_vertices[reference[i]].y -= lipraiser[i].y;
+
+    }
+
+}
+
+void FacemodelCandide::eyeCloser()
+{
+    std::vector<short> reference;
+    std::vector<glm::vec3> eyecloser;
+
+    reference.push_back(21 );
+    reference.push_back(22 );
+    reference.push_back(54 );
+    reference.push_back(55 );
+    reference.push_back(97 );
+    reference.push_back(98 );
+    reference.push_back(99 );
+    reference.push_back(100);
+    reference.push_back(105);
+    reference.push_back(106);
+    reference.push_back(107);
+    reference.push_back(108);
+
+
+
+
+    eyecloser.push_back(glm::vec3(0.000000   ,-0.062000    ,0.010000));
+    eyecloser.push_back(glm::vec3(0.000000   , 0.020000    ,0.010000));
+    eyecloser.push_back(glm::vec3(0.000000   ,-0.062000    ,0.010000));
+    eyecloser.push_back(glm::vec3(0.000000   , 0.020000    ,0.010000));
+    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
+    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
+    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
+    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
+    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
+    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
+    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
+    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
+
+    for(unsigned int i = 0; i < eyecloser.size(); ++i)
+    {
+        eyecloser[i].x /= 10;
+        eyecloser[i].y /=10;
+
+    }
+
+    for(unsigned int i = 0; i < reference.size(); ++i)
+    {
+
+    vec_vertices[reference[i]].y += 0.01;
 
     }
 

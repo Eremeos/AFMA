@@ -17,22 +17,22 @@ SOURCES += main.cpp\
     afma_2d_mainwindow.cpp \
     afma_3d_mainwindow.cpp \
     utility2d.cpp \
-    afma_2d_imagedisplay.cpp \
     openglwindow.cpp \
     facemodelcandide.cpp \
     openglannotationwindow.cpp \
-    facecomponent.cpp
+    facecomponent.cpp \
+    animationdialog.cpp
 
 HEADERS  += afma_mainwindow.h \
     afma_2d_mainwindow.h \
     afma_3d_mainwindow.h \
     utility2d.h \
-    afma_2d_imagedisplay.h \
     openglwindow.h \
 	glm\vec3.hpp \
     facemodelcandide.h \
     openglannotationwindow.h \
-    facecomponent.h
+    facecomponent.h \
+    animationdialog.h
 
 FORMS    += afma_mainwindow.ui \
     afma_2d_mainwindow.ui \
@@ -64,23 +64,6 @@ LIBS += -LD:\Qt\5.5\mingw492_32\lib\libQt5OpenGL.a -lopengl32\
 
 
 DISTFILES += \
-    haarcascades/haarcascade_eye.xml \
-    haarcascades/haarcascade_eye_tree_eyeglasses.xml \
-    haarcascades/haarcascade_frontalcatface.xml \
-    haarcascades/haarcascade_frontalcatface_extended.xml \
-    haarcascades/haarcascade_frontalface_alt.xml \
-    haarcascades/haarcascade_frontalface_alt_tree.xml \
-    haarcascades/haarcascade_frontalface_alt2.xml \
-    haarcascades/haarcascade_frontalface_default.xml \
-    haarcascades/haarcascade_fullbody.xml \
-    haarcascades/haarcascade_lefteye_2splits.xml \
-    haarcascades/haarcascade_licence_plate_rus_16stages.xml \
-    haarcascades/haarcascade_lowerbody.xml \
-    haarcascades/haarcascade_profileface.xml \
-    haarcascades/haarcascade_righteye_2splits.xml \
-    haarcascades/haarcascade_russian_plate_number.xml \
-    haarcascades/haarcascade_smile.xml \
-    haarcascades/haarcascade_upperbody.xml \
     images/biometrisches-passbild-fotostudio-bretten.jpg \
     images/black.jpg \
     images/Claudia01.jpg \

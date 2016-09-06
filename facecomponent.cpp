@@ -4,3 +4,8 @@ FaceComponent::FaceComponent()
 {
 
 }
+
+FaceComponent::FaceComponent(QString name)
+{
+    this->name = name;
+}

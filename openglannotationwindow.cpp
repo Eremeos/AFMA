@@ -32,7 +32,15 @@ void OpenGLAnnotationWindow::mousePressEvent(QMouseEvent *e)
   vec_vertices.push_back(glm::vec3((pt.x()/width*2)-1, (pt.y()/height*(-2))+1, ogl->model.vec_vertices[vec_vertices.size()].z));
     update();
    ogl->next();
-   std::cout<< (pt.x()/width*2)-1  << " " << (pt.y()/height*(-2))+1 << endl;
+   for(int i = 0; i < ogl->model.vec_doubled_points.size(); ++i)
+   {
+       if(ogl->count == ogl->model.vec_doubled_points[i].x)
+       {
+           vec_vertices.push_back(vec_vertices[ogl->model.vec_doubled_points[i].y]);
+           ogl->next();
+           std::cout << ogl->count<< endl;
+       }
+   }
     }
 }
 

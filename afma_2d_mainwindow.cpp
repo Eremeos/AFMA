@@ -12,18 +12,42 @@
 #include <iostream>
 #include <algorithm>
 #include <QMessageBox>
+#include <QFormLayout>
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <animationdialog.h>
+#include <QInputDialog>
+#include <QTimer>
+
 
 AFMA_2D_MainWindow::AFMA_2D_MainWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AFMA_2D_MainWindow)
 {
+    this->setWindowFlags(windowFlags() | Qt::WindowMaximizeButtonHint | Qt::WindowMinimizeButtonHint);
     ui->setupUi(this);
     ui->annotationWidget->ogl = ui->openGLWidget;
+    connect(&timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
 }
 
 AFMA_2D_MainWindow::~AFMA_2D_MainWindow()
 {
     delete ui;
+}
+
+void AFMA_2D_MainWindow::updateModel()
+{
+  //  int i = ui->cb_FaceComponents->currentIndex();
+    for(int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+    {
+    for(int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++j)
+    {
+        ui->openGLWidget->model.vec_changed[ui->openGLWidget->model.vec_faceComponents[i].vec_reference_point[j]] = ui->openGLWidget->model.vec_faceComponents[i].vec_moved[j];
+        debugMessage("Executed");
+    }
+    }
+    ui->openGLWidget->update();
+    this->update();
 }
 
 void AFMA_2D_MainWindow::drawAnnotation(std::vector<glm::vec3> pts)
@@ -50,10 +74,36 @@ void AFMA_2D_MainWindow::clearAnnotation()
     ui->annotationWidget->update();
 }
 
+void AFMA_2D_MainWindow::updateAnimation()
+{
+    if(animationList.size() > 0)
+     {
+    if(animation == false)
+    {
+        for(int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+        {
+            for(int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++ j)
+            {
+                 ui->openGLWidget->model.vec_changed[ui->openGLWidget->model.vec_faceComponents[i].vec_reference_point[j]] = ui->openGLWidget->model.vec_faceComponents[i].vec_vertices[j];
+            }
+        }
+        animation = true;
+    }
+    else
+    {
+        int i = ui->cb_AnimationList->currentIndex();
+        ui->openGLWidget->model.vec_changed = animationList[i];
+        animation = false;
+    }
+    ui->openGLWidget->update();
+    }
+}
+
 
 
 void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
 {
+    timer.stop();
     clearAnnotation();
 
     m_fileName = QFileDialog::getOpenFileName(this, tr("Open Image"),
@@ -66,25 +116,13 @@ void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
        return;
    }
 
-    ui->sld_Scale->setSliderPosition(m_initial_Slider_position);
+    ui->sld_Time->setSliderPosition(m_initial_Slider_position);
     Texture.load(m_fileName);
     ui->annotationWidget->textureImage = Texture;
     ui->openGLWidget->textureImage = Texture;
     ui->annotationWidget->filepath = m_fileName;
     ui->annotationWidget->update();
 
-}
-
-
-void AFMA_2D_MainWindow::on_sld_Scale_sliderMoved(int position)
-{
-    debugMessage(QString::number(position));
-    for(unsigned int i = 0; i < ui->openGLWidget->model.vec_vertices.size(); ++i)
-    {
-    ui->openGLWidget->model.vec_vertices[i].x *= 0.9f;
-    ui->openGLWidget->model.vec_vertices[i].y *= 0.9f;
-    }
-    ui->openGLWidget->update();
 }
 
 
@@ -127,6 +165,25 @@ void AFMA_2D_MainWindow::on_psBtn_SaveAnnotation_clicked()
         }
         xmlWriter.writeEndElement();
 
+
+        xmlWriter.writeStartElement("AnimationList");
+        for(int i = 0; i < animationName.size(); ++i)
+        {
+            xmlWriter.writeStartElement("AnimationName");
+            xmlWriter.writeCharacters(animationName[i]);
+            xmlWriter.writeEndElement();
+            xmlWriter.writeStartElement(animationName[i]);
+                for(int j = 0; j < animationList[i].size(); ++j)
+                {
+                xmlWriter.writeStartElement("Point" + QString::number(j));
+                xmlWriter.writeTextElement("x", QString::number((float)animationList[i][j].x));
+                xmlWriter.writeTextElement("y", QString::number((float)animationList[i][j].y));
+                xmlWriter.writeTextElement("z", QString::number((float)animationList[i][j].z));
+                xmlWriter.writeEndElement();
+                }
+            xmlWriter.writeEndElement();
+        }
+        xmlWriter.writeEndElement();
         xmlWriter.writeEndElement();
         xmlWriter.writeEndDocument();
 
@@ -136,7 +193,13 @@ void AFMA_2D_MainWindow::on_psBtn_SaveAnnotation_clicked()
 
 void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
 {
+        timer.stop();
         clearAnnotation();
+        animationList.clear();
+        animationName.clear();
+        ui->cb_AnimationList->clear();
+        ui->annotationWidget->vec_vertices.clear();
+
 
 
         QString load_filename = QFileDialog::getOpenFileName(this,
@@ -215,12 +278,66 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
                                     ++i;
                             }
                         }
+                        else if(reader.name() == "AnimationList")
+                        {
+                            QString name;
+                            while(reader.readNextStartElement())
+                            {
+
+                                int j = 0;
+                                if(reader.name() == "AnimationName")
+                                {   name = QString::fromStdString(reader.readElementText().toStdString());
+                                    animationName.push_back(name);
+                                }
+                                else if(reader.name() == name)
+                                {
+                                    std::vector<glm::vec3> vec_animationPoints;
+                                   while(reader.readNextStartElement())
+                                    {
+                                        if(reader.name() == "Point" +QString::number(j))
+                                       {
+                                            glm::vec3 pt;
+                                            while(reader.readNextStartElement())
+                                            {
+                                                if(reader.name() == "x")
+                                                {
+                                                    pt.x = reader.readElementText().toDouble();
+                                                }
+                                                else if(reader.name() == "y")
+                                                {
+                                                    pt.y = reader.readElementText().toDouble();
+                                                }
+                                                else if(reader.name() == "z")
+                                                {
+                                                    pt.z = reader.readElementText().toDouble();
+                                                }
+                                                else
+                                                {
+                                                    debugMessage("x,y,z fail");
+                                                    reader.skipCurrentElement();
+                                                }
+                                            }
+                                            vec_animationPoints.push_back(pt);
+                                            debugMessage(QString::number(vec_animationPoints.size()));
+
+                                        }
+                                        else
+                                             {
+                                                debugMessage("Point fail");
+                                                reader.skipCurrentElement();
+                                             }
+                                        ++j;
+                                    }
+                                   animationList.push_back(vec_animationPoints);
+                                }
+                            }
+                        }
                         else
                         {
-                            debugMessage("Annotation fail");
+                            debugMessage("Animation fail");
                             reader.skipCurrentElement();
                         }
-                    }
+                  }
                 }
             }
             else
@@ -234,18 +351,29 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
         Texture.load(m_fileName);
         ui->annotationWidget->textureImage = Texture;
         ui->openGLWidget->textureImage = Texture;
-        ui->sld_Scale->setSliderPosition(m_initial_Slider_position);
-
+        ui->sld_Time->setSliderPosition(m_initial_Slider_position);
+        ui->openGLWidget->count = 0;
         for(unsigned int i = 0; i < ui->annotationWidget->vec_vertices.size(); ++i)
         {
             ui->openGLWidget->next();
         }
         ui->openGLWidget->draw();
+        for(int i = 0; i < animationName.size(); ++i)
+        {
+            ui->cb_AnimationList->addItem(animationName[i]);
+        }
         debugMessage(QString::number(ui->openGLWidget->model.vec_vertices.size()) +" " + QString::number(ui->annotationWidget->vec_vertices.size()) +" " + QString::number(ui->openGLWidget->count));
+        this->update();
+
+        if(ui->annotationWidget->vec_vertices.size() == ui->openGLWidget->model.vec_vertices.size())
+        {
+            on_psBtn_GenerateModel_clicked();
+        }
 }
 
 void AFMA_2D_MainWindow::on_psBtn_ClearAnnotation_clicked()
 {
+    timer.stop();
     clearAnnotation();
     ui->openGLWidget->undoAnnotation();
 
@@ -256,8 +384,8 @@ void AFMA_2D_MainWindow::on_psBtn_ClearAnnotation_clicked()
 
 void AFMA_2D_MainWindow::on_psBtn_UndoLastPoint_clicked()
 {
-
-    if(ui->annotationWidget->vec_vertices.size() > 0)
+    timer.stop();
+    if(ui->annotationWidget->vec_vertices.size() > 0 && ui->annotationWidget->vec_vertices.size() != ui->openGLWidget->model.vec_vertices.size())
     {
     ui->annotationWidget->vec_vertices.pop_back();
 
@@ -276,12 +404,16 @@ void AFMA_2D_MainWindow::on_psBtn_UndoLastPoint_clicked()
 void AFMA_2D_MainWindow::on_psBtn_NextPoint_clicked()
 {
 
+      // ui->openGLWidget->model.upperLipraiser();
 
-        ui->openGLWidget->model.vec_changed[16].y -= 0.001f;
-        ui->openGLWidget->model.vec_changed[18].y -= 0.001f;
+       // ui->openGLWidget->model.eyeCloser();
 
-        ui->openGLWidget->model.vec_changed[49].y -= 0.001f;
-        ui->openGLWidget->model.vec_changed[51].y -= 0.001f;
+
+     //   ui->openGLWidget->model.vec_changed[16].y -= 0.001f;
+     //   ui->openGLWidget->model.vec_changed[18].y -= 0.001f;
+
+    //    ui->openGLWidget->model.vec_changed[49].y -= 0.001f;
+     //   ui->openGLWidget->model.vec_changed[51].y -= 0.001f;
 
 
 
@@ -294,6 +426,7 @@ void AFMA_2D_MainWindow::on_psBtn_NextPoint_clicked()
 
 void AFMA_2D_MainWindow::on_psBtn_GenerateModel_clicked()
 {
+    timer.stop();
     if(ui->openGLWidget->line == true)
     {
     ui->openGLWidget->line = false;
@@ -318,12 +451,83 @@ void AFMA_2D_MainWindow::on_psBtn_GenerateModel_clicked()
     }
     debugMessage(QString::number(ui->openGLWidget->model.vec_vertices.size()));
     ui->openGLWidget->update();
+    int s = ui->openGLWidget->model.vec_faceComponents.size();
+    for(int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+    {
+    ui->cb_FaceComponents->addItem(ui->openGLWidget->model.vec_faceComponents[i].name);
+    this->update();
+    }
+    ui->cb_AnimationList->clear();
+    for(int i = 0; i < animationName.size(); ++i)
+    {
+    ui->cb_AnimationList->addItem(animationName[i]);
+    }
+    ui->openGLWidget->model.setFaceComponents();
 }
 
 void AFMA_2D_MainWindow::on_psBtn_AnnotationHelp_clicked()
 {
-    QMessageBox *mb = new QMessageBox();
 
-    mb->setText(ui->openGLWidget->model.vec_annotationText[ui->openGLWidget->count]);
-    mb->show();
+    QMessageBox *mb = new QMessageBox(this);
+    if(ui->annotationWidget->vec_vertices.size() < ui->openGLWidget->model.vec_vertices.size())
+    {
+        mb->setText(QString::number(ui->openGLWidget->count) + ": " +ui->openGLWidget->model.vec_annotationText[ui->openGLWidget->count]);
+    }
+    else
+    {
+        mb->setText("Annotation done");
+    }
+        mb->show();
+}
+
+void AFMA_2D_MainWindow::on_psBtn_SetAnimation_clicked()
+{
+    timer.stop();
+    int i = ui->cb_FaceComponents->currentIndex();
+
+    float t =  ui->openGLWidget->model.vec_faceComponents[i].vec_vertices[0].x;
+    dia = new AnimationDialog(ui->openGLWidget->model.vec_faceComponents[i].vec_name, ui->openGLWidget->model.vec_faceComponents[i].vec_vertices, ui->openGLWidget->model.vec_faceComponents[i].vec_moved);
+    connect(dia->psb_accept, SIGNAL(clicked(bool)), this, SLOT(updateModel()));
+    dia->exec();
+
+}
+
+void AFMA_2D_MainWindow::on_psBtn_StartAnimation_clicked()
+{
+    if(timer.isActive())
+    {
+        timer.stop();
+    }
+    else
+    {
+    timeframe = ui->sld_Time->value();
+
+    timer.start(timeframe*100);
+    }
+}
+
+void AFMA_2D_MainWindow::on_psBtn_SafeAnimation_clicked()
+{
+    timer.stop();
+    bool ok;
+    QString newAnimationName = QInputDialog::getText(this, tr("QInputDialog::getText()"),tr("Please enter a name for the animation:"),QLineEdit::Normal,"",&ok);
+    if(ok == true)
+    {
+        ui->cb_AnimationList->addItem(newAnimationName);
+        animationName.push_back(newAnimationName);
+        animationList.push_back(ui->openGLWidget->model.vec_changed);
+    }
+
+}
+
+void AFMA_2D_MainWindow::on_sld_Time_valueChanged(int value)
+{
+    //debugMessage(QString::number(value);
+    timeframe = value;
+    if(timer.isActive())
+    {
+        timer.start(timeframe*100);
+    }
+   // disconnect(&timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
+    ui->openGLWidget->update();
 }

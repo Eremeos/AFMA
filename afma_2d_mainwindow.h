@@ -4,15 +4,16 @@
 #include <QDialog>
 #include <opencv2/core/core.hpp>
 #include <stdio.h>
-
+#include <QMainWindow>
 #include <QFileDialog>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsEllipseItem>
 #include <QMouseEvent>
-#include "afma_2d_imagedisplay.h"
 #include <QPointF>
 #include <glm/glm.hpp>
+#include <animationdialog.h>
+#include <QTimer>
 
 namespace Ui {
 class AFMA_2D_MainWindow;
@@ -30,15 +31,25 @@ public:
     QString m_fileName;
 
     double m_scale = 1.0;
-    int m_initial_Slider_position = 50;
+    int m_initial_Slider_position = 1;
 
     QImage Texture;
+    AnimationDialog *dia;
+    std::vector<std::vector<glm::vec3>> animationList;
+    std::vector<QString> animationName;
+    int timeframe = 1;
+
+    QTimer timer;
+
+    bool animation = false;
 
     unsigned int changeCount = 0;
 
 
 
 private slots:
+
+    void updateModel();
 
     void drawAnnotation(std::vector<glm::vec3> pts);
 
@@ -47,10 +58,10 @@ private slots:
 
     void clearAnnotation();
 
+    void updateAnimation();
+
     void on_psBtn_Load_clicked();
 
-
-    void on_sld_Scale_sliderMoved(int position);
 
 
     void on_psBtn_SaveAnnotation_clicked();
@@ -69,6 +80,14 @@ private slots:
     void on_psBtn_GenerateModel_clicked();
 
     void on_psBtn_AnnotationHelp_clicked();
+
+    void on_psBtn_SetAnimation_clicked();
+
+    void on_psBtn_StartAnimation_clicked();
+
+    void on_psBtn_SafeAnimation_clicked();
+
+    void on_sld_Time_valueChanged(int value);
 
 private:
     Ui::AFMA_2D_MainWindow *ui;

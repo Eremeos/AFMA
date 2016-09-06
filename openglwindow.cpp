@@ -137,7 +137,7 @@ VBOColor.release();
 
         // Wrap texture coordinates by repeating
         // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-        texture->setWrapMode(QOpenGLTexture::ClampToEdge);
+        texture->setWrapMode(QOpenGLTexture::ClampToBorder);
 
 
     // Give our vertices to OpenGL.
@@ -193,6 +193,8 @@ void OpenGLWindow::draw()
 
 void OpenGLWindow::next()
 {
+
+
 if(count < model.vec_vertices.size()-1)
 {
     model.vec_color[count] = glm::vec4(1,1,1,0.1);

@@ -14,6 +14,9 @@ public:
     void initializeColor();
     void initializeIndices();
     void initializeAnnotationText();
+    void initializeDoubledPoints();
+    void initializeFaceComponents();
+    void setFaceComponents();
 
     std::vector<glm::vec3> vec_vertices;
     std::vector<glm::vec3> vec_vertices_base;
@@ -23,17 +26,17 @@ public:
     std::vector<glm::vec3> vec_indices;
     std::vector<unsigned short> vec_indices_ushort;
     std::vector<QString> vec_annotationText;
+    std::vector<glm::vec2> vec_doubled_points;
+    std::vector<FaceComponent> vec_faceComponents;
 
-    FaceComponent leftEyebrow;
-    FaceComponent rightEyebrow;
-    FaceComponent leftEye;
-    FaceComponent rightEye;
-    FaceComponent upperLip;
-    FaceComponent lowerLip;
 
-    void setFaceComponents();
+
 
     void upperLipraiser();
+    void eyeCloser();
+
+    std::vector<short> reference;
+    std::vector<glm::vec3> lipraiser;
 
 };
 
