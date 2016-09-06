@@ -1,6 +1,5 @@
 #include "afma_2d_mainwindow.h"
 #include "ui_afma_2d_mainwindow.h"
-#include "utility2d.h"
 #include <algorithm>
 #include <QFileDialog>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -401,28 +400,6 @@ void AFMA_2D_MainWindow::on_psBtn_UndoLastPoint_clicked()
 }
 
 
-void AFMA_2D_MainWindow::on_psBtn_NextPoint_clicked()
-{
-
-      // ui->openGLWidget->model.upperLipraiser();
-
-       // ui->openGLWidget->model.eyeCloser();
-
-
-     //   ui->openGLWidget->model.vec_changed[16].y -= 0.001f;
-     //   ui->openGLWidget->model.vec_changed[18].y -= 0.001f;
-
-    //    ui->openGLWidget->model.vec_changed[49].y -= 0.001f;
-     //   ui->openGLWidget->model.vec_changed[51].y -= 0.001f;
-
-
-
-
-
-    ui->openGLWidget->update();
-}
-
-
 
 void AFMA_2D_MainWindow::on_psBtn_GenerateModel_clicked()
 {
@@ -522,12 +499,22 @@ void AFMA_2D_MainWindow::on_psBtn_SafeAnimation_clicked()
 
 void AFMA_2D_MainWindow::on_sld_Time_valueChanged(int value)
 {
-    //debugMessage(QString::number(value);
     timeframe = value;
     if(timer.isActive())
     {
         timer.start(timeframe*100);
     }
-   // disconnect(&timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
     ui->openGLWidget->update();
+}
+
+void AFMA_2D_MainWindow::on_psBtn_RemoveAnimation_clicked()
+{
+    timer.stop();
+    if(animationName.size() > 0)
+    {
+    int index = ui->cb_AnimationList->currentIndex();
+    ui->cb_AnimationList->removeItem(index);
+    animationName.erase(animationName.begin() + index);
+    animationList.erase(animationList.begin() + index);
+    }
 }

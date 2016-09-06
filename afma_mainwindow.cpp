@@ -1,7 +1,7 @@
 #include "afma_mainwindow.h"
 #include "ui_afma_mainwindow.h"
 #include "afma_2d_mainwindow.h"
-#include "afma_3d_mainwindow.h"
+
 
 
 
@@ -23,7 +23,3 @@ void AFMA_MainWindow::on_psBtn_2D_clicked()
     m_window2D.showMaximized();
 }
 
-void AFMA_MainWindow::on_psBtn_3D_clicked()
-{
-   m_window3D.showMaximized();
-}

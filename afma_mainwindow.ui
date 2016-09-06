@@ -22,13 +22,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="psBtn_3D">
-      <property name="text">
-       <string>3D</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">

@@ -74,8 +74,6 @@ private slots:
     void on_psBtn_UndoLastPoint_clicked();
 
 
-    void on_psBtn_NextPoint_clicked();
-
 
     void on_psBtn_GenerateModel_clicked();
 
@@ -88,6 +86,8 @@ private slots:
     void on_psBtn_SafeAnimation_clicked();
 
     void on_sld_Time_valueChanged(int value);
+
+    void on_psBtn_RemoveAnimation_clicked();
 
 private:
     Ui::AFMA_2D_MainWindow *ui;

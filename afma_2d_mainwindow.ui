@@ -111,16 +111,36 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="psBtn_NextPoint">
+      <widget class="QPushButton" name="psBtn_AnnotationHelp">
        <property name="text">
-        <string>Next Point</string>
+        <string>Annotation Help</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="psBtn_AnnotationHelp">
+      <widget class="QComboBox" name="cb_FaceComponents"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="psBtn_SetAnimation">
        <property name="text">
-        <string>Annotation Help</string>
+        <string>Set Animation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="psBtn_SafeAnimation">
+       <property name="text">
+        <string>Safe Animation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cb_AnimationList"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="psBtn_RemoveAnimation">
+       <property name="text">
+        <string>Remove</string>
        </property>
       </widget>
      </item>
@@ -153,27 +173,10 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cb_FaceComponents"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="psBtn_SetAnimation">
-       <property name="text">
-        <string>Set Animation</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="psBtn_SafeAnimation">
-       <property name="text">
-        <string>Safe Animation</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="cb_AnimationList"/>
-     </item>
-     <item>
       <widget class="QPushButton" name="psBtn_StartAnimation">
+       <property name="toolTip">
+        <string>Start and Stop Animation</string>
+       </property>
        <property name="text">
         <string>Start Animation</string>
        </property>
