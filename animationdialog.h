@@ -22,12 +22,14 @@ public:
     QLabel debug;
     QPushButton *psb_accept;
     QPushButton *psb_close;
+    QPushButton *psb_show;
     QDoubleSpinBox *dsb0;
     QDoubleSpinBox *dsb1;
     QDoubleSpinBox *dsb2;
 public slots:
     void clickedAccept();
     void clickedClose();
+
 };
 
 #endif // ANIMATIONDIALOG_H

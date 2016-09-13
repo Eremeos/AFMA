@@ -31,7 +31,7 @@ public:
     QString m_fileName;
 
     double m_scale = 1.0;
-    int m_initial_Slider_position = 1;
+    int m_initial_Slider_position = 5;
 
     QImage Texture;
     AnimationDialog *dia;
@@ -43,6 +43,8 @@ public:
 
     bool animation = false;
 
+    bool show = false;
+
     unsigned int changeCount = 0;
 
 
@@ -50,6 +52,8 @@ public:
 private slots:
 
     void updateModel();
+
+    void showModel();
 
     void drawAnnotation(std::vector<glm::vec3> pts);
 
@@ -88,6 +92,8 @@ private slots:
     void on_sld_Time_valueChanged(int value);
 
     void on_psBtn_RemoveAnimation_clicked();
+
+    void on_psBtn_Override_clicked();
 
 private:
     Ui::AFMA_2D_MainWindow *ui;

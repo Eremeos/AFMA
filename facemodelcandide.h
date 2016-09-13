@@ -29,15 +29,6 @@ public:
     std::vector<glm::vec2> vec_doubled_points;
     std::vector<FaceComponent> vec_faceComponents;
 
-
-
-
-    void upperLipraiser();
-    void eyeCloser();
-
-    std::vector<short> reference;
-    std::vector<glm::vec3> lipraiser;
-
 };
 
 #endif // FACEMODELCANDIDE_H

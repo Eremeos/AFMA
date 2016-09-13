@@ -37,13 +37,42 @@ AFMA_2D_MainWindow::~AFMA_2D_MainWindow()
 void AFMA_2D_MainWindow::updateModel()
 {
   //  int i = ui->cb_FaceComponents->currentIndex();
-    for(int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+    for(unsigned int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
     {
-    for(int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++j)
+    for(unsigned int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++j)
     {
         ui->openGLWidget->model.vec_changed[ui->openGLWidget->model.vec_faceComponents[i].vec_reference_point[j]] = ui->openGLWidget->model.vec_faceComponents[i].vec_moved[j];
         debugMessage("Executed");
     }
+    }
+    ui->openGLWidget->update();
+    this->update();
+}
+
+void AFMA_2D_MainWindow::showModel()
+{
+    if(show == false)
+    {
+    for(unsigned int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+    {
+    for(unsigned int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++j)
+    {
+        ui->openGLWidget->model.vec_changed[ui->openGLWidget->model.vec_faceComponents[i].vec_reference_point[j]] = ui->openGLWidget->model.vec_faceComponents[i].vec_moved[j];
+        debugMessage("Show");
+    }
+    }
+    show = true;
+    }
+    else
+    {
+        for(unsigned int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+        {
+            for(unsigned int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++ j)
+            {
+                 ui->openGLWidget->model.vec_changed[ui->openGLWidget->model.vec_faceComponents[i].vec_reference_point[j]] = ui->openGLWidget->model.vec_faceComponents[i].vec_vertices[j];
+            }
+        }
+        show = false;
     }
     ui->openGLWidget->update();
     this->update();
@@ -79,9 +108,9 @@ void AFMA_2D_MainWindow::updateAnimation()
      {
     if(animation == false)
     {
-        for(int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+        for(unsigned int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
         {
-            for(int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++ j)
+            for(unsigned int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++ j)
             {
                  ui->openGLWidget->model.vec_changed[ui->openGLWidget->model.vec_faceComponents[i].vec_reference_point[j]] = ui->openGLWidget->model.vec_faceComponents[i].vec_vertices[j];
             }
@@ -166,13 +195,13 @@ void AFMA_2D_MainWindow::on_psBtn_SaveAnnotation_clicked()
 
 
         xmlWriter.writeStartElement("AnimationList");
-        for(int i = 0; i < animationName.size(); ++i)
+        for(unsigned int i = 0; i < animationName.size(); ++i)
         {
             xmlWriter.writeStartElement("AnimationName");
             xmlWriter.writeCharacters(animationName[i]);
             xmlWriter.writeEndElement();
             xmlWriter.writeStartElement(animationName[i]);
-                for(int j = 0; j < animationList[i].size(); ++j)
+                for(unsigned int j = 0; j < animationList[i].size(); ++j)
                 {
                 xmlWriter.writeStartElement("Point" + QString::number(j));
                 xmlWriter.writeTextElement("x", QString::number((float)animationList[i][j].x));
@@ -357,7 +386,7 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
             ui->openGLWidget->next();
         }
         ui->openGLWidget->draw();
-        for(int i = 0; i < animationName.size(); ++i)
+        for(unsigned int i = 0; i < animationName.size(); ++i)
         {
             ui->cb_AnimationList->addItem(animationName[i]);
         }
@@ -428,14 +457,13 @@ void AFMA_2D_MainWindow::on_psBtn_GenerateModel_clicked()
     }
     debugMessage(QString::number(ui->openGLWidget->model.vec_vertices.size()));
     ui->openGLWidget->update();
-    int s = ui->openGLWidget->model.vec_faceComponents.size();
-    for(int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
+    for(unsigned int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
     {
     ui->cb_FaceComponents->addItem(ui->openGLWidget->model.vec_faceComponents[i].name);
     this->update();
     }
     ui->cb_AnimationList->clear();
-    for(int i = 0; i < animationName.size(); ++i)
+    for(unsigned int i = 0; i < animationName.size(); ++i)
     {
     ui->cb_AnimationList->addItem(animationName[i]);
     }
@@ -461,10 +489,9 @@ void AFMA_2D_MainWindow::on_psBtn_SetAnimation_clicked()
 {
     timer.stop();
     int i = ui->cb_FaceComponents->currentIndex();
-
-    float t =  ui->openGLWidget->model.vec_faceComponents[i].vec_vertices[0].x;
     dia = new AnimationDialog(ui->openGLWidget->model.vec_faceComponents[i].vec_name, ui->openGLWidget->model.vec_faceComponents[i].vec_vertices, ui->openGLWidget->model.vec_faceComponents[i].vec_moved);
     connect(dia->psb_accept, SIGNAL(clicked(bool)), this, SLOT(updateModel()));
+    connect(dia->psb_show, SIGNAL(clicked(bool)), this, SLOT(showModel()));
     dia->exec();
 
 }
@@ -517,4 +544,10 @@ void AFMA_2D_MainWindow::on_psBtn_RemoveAnimation_clicked()
     animationName.erase(animationName.begin() + index);
     animationList.erase(animationList.begin() + index);
     }
+}
+
+void AFMA_2D_MainWindow::on_psBtn_Override_clicked()
+{
+    int i =  ui->cb_AnimationList->currentIndex();
+    animationList[i] = ui->openGLWidget->model.vec_changed;
 }

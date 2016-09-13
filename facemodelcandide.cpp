@@ -431,14 +431,14 @@ void FacemodelCandide::initializeAnnotationText()
     vec_annotationText.push_back("Right side of nose tip");
     vec_annotationText.push_back("Left upper edge of nose bone");
     vec_annotationText.push_back("Right upper edge of nose bone");
-    vec_annotationText.push_back("Midpoint between FFP 8.4 and 8.1 on outer upper lip contour");
-    vec_annotationText.push_back("Midpoint between FFP 8.3 and 8.1 on outer upper lip contour");
-    vec_annotationText.push_back("Midpoint between FFP 2.2 and 2.5 on the inner upper lip contour");
-    vec_annotationText.push_back("Midpoint between FFP 2.2 and 2.4 on the inner upper lip contour");
-    vec_annotationText.push_back("Midpoint between FFP 2.3 and 2.5 on the inner lower lip contour");
-    vec_annotationText.push_back("Midpoint between FFP 2.3 and 2.4 on the inner lower lip contour");
-    vec_annotationText.push_back("Midpoint between FFP 8.4 and 8.2 on outer lower lip contour");
-    vec_annotationText.push_back("Midpoint between FFP 8.3 and 8.2 on outer lower lip contour");
+    vec_annotationText.push_back("Midpoint outer upper lip contour");      //between FFP 8.4 and 8.1 on
+    vec_annotationText.push_back("Midpoint outer upper lip contour");      //between FFP 8.3 and 8.1 on
+    vec_annotationText.push_back("Midpoint the inner upper lip contour");  //between FFP 2.2 and 2.5 on
+    vec_annotationText.push_back("Midpoint the inner upper lip contour");  //between FFP 2.2 and 2.4 on
+    vec_annotationText.push_back("Midpoint the inner lower lip contour");  //between FFP 2.3 and 2.5 on
+    vec_annotationText.push_back("Midpoint the inner lower lip contour");  //between FFP 2.3 and 2.4 on
+    vec_annotationText.push_back("Midpoint outer lower lip contour");      //between FFP 8.4 and 8.2 on
+    vec_annotationText.push_back("Midpoint outer lower lip contour");      //between FFP 8.3 and 8.2 on
     vec_annotationText.push_back("Middle point of inner upper lip contour");
     vec_annotationText.push_back("Left corner of inner lip contour");
     vec_annotationText.push_back("Right corner of inner lip contour");
@@ -482,31 +482,24 @@ void FacemodelCandide::initializeDoubledPoints()
 
 void FacemodelCandide::initializeFaceComponents()
 {
-    FaceComponent rightEyebrow;
-    rightEyebrow.name = "rightEyebrow";
-    rightEyebrow.vec_reference_point.push_back(48);
-    rightEyebrow.vec_reference_point.push_back(49);
-    rightEyebrow.vec_reference_point.push_back(50);
-    rightEyebrow.vec_reference_point.push_back(51);
+    FaceComponent Eyebrows;
+    Eyebrows.name = "eyebrows";
+    Eyebrows.vec_reference_point.push_back(48);
+    Eyebrows.vec_reference_point.push_back(49);
+    Eyebrows.vec_reference_point.push_back(50);
+    Eyebrows.vec_reference_point.push_back(51);
+    Eyebrows.vec_reference_point.push_back(15);
+    Eyebrows.vec_reference_point.push_back(16);
+    Eyebrows.vec_reference_point.push_back(17);
+    Eyebrows.vec_reference_point.push_back(18);
 
-    vec_faceComponents.push_back(rightEyebrow);
-
-    FaceComponent leftEyebrow;
-    leftEyebrow.name = "leftEyebrow";
-    leftEyebrow.vec_reference_point.push_back(15);
-    leftEyebrow.vec_reference_point.push_back(16);
-    leftEyebrow.vec_reference_point.push_back(17);
-    leftEyebrow.vec_reference_point.push_back(18);
-
-    vec_faceComponents.push_back(leftEyebrow);
-
+    vec_faceComponents.push_back(Eyebrows);
 
     FaceComponent leftEye;
     leftEye.name = "leftEye";
 
     leftEye.vec_reference_point.push_back(23);
     leftEye.vec_reference_point.push_back(20);
-
     leftEye.vec_reference_point.push_back(67);
     leftEye.vec_reference_point.push_back(68);
     leftEye.vec_reference_point.push_back(71);
@@ -555,7 +548,6 @@ void FacemodelCandide::initializeFaceComponents()
     lips.name = "lips";
     lips.vec_reference_point.push_back(7);
     lips.vec_reference_point.push_back(8);
-    lips.vec_reference_point.push_back(10);
     lips.vec_reference_point.push_back(31);
     lips.vec_reference_point.push_back(33);
     lips.vec_reference_point.push_back(64);
@@ -571,6 +563,7 @@ void FacemodelCandide::initializeFaceComponents()
     lips.vec_reference_point.push_back(83);
     lips.vec_reference_point.push_back(84);
     lips.vec_reference_point.push_back(9);
+    lips.vec_reference_point.push_back(10);
     lips.vec_reference_point.push_back(32);
     lips.vec_reference_point.push_back(65);
     lips.vec_reference_point.push_back(30);
@@ -581,8 +574,44 @@ void FacemodelCandide::initializeFaceComponents()
     vec_faceComponents.push_back(lips);
 
 
+    FaceComponent checks;
+    checks.name = "checks";
+    checks.vec_reference_point.push_back(90);
+    checks.vec_reference_point.push_back(91);
+    checks.vec_reference_point.push_back(27);
+    checks.vec_reference_point.push_back(60);
+
+    vec_faceComponents.push_back(checks);
 
 
+    FaceComponent nose;
+    nose.name = "nose";
+    nose.vec_reference_point.push_back(26);
+    nose.vec_reference_point.push_back(59);
+    nose.vec_reference_point.push_back(5);
+    nose.vec_reference_point.push_back(112);
+    nose.vec_reference_point.push_back(111);
+    nose.vec_reference_point.push_back(78);
+    nose.vec_reference_point.push_back(77);
+    nose.vec_reference_point.push_back(94);
+    nose.vec_reference_point.push_back(92);
+    nose.vec_reference_point.push_back(93);
+    nose.vec_reference_point.push_back(6);
+
+    vec_faceComponents.push_back(nose);
+
+    FaceComponent head;
+    head.name = "head";
+    head.vec_reference_point.push_back(61);
+    head.vec_reference_point.push_back(28);
+    head.vec_reference_point.push_back(29);
+    head.vec_reference_point.push_back(62);
+    head.vec_reference_point.push_back(1);
+    head.vec_reference_point.push_back(34);
+    head.vec_reference_point.push_back(46);
+    head.vec_reference_point.push_back(13);
+
+    vec_faceComponents.push_back(head);
 
 
 
@@ -602,97 +631,4 @@ void FacemodelCandide::setFaceComponents()
        }
            vec_faceComponents[i].vec_moved = vec_faceComponents[i].vec_vertices;
     }
-}
-
-void FacemodelCandide::upperLipraiser()
-{
-
-
-    reference.push_back(7);
-    reference.push_back(33);
-    reference.push_back(66);
-    reference.push_back(79);
-    reference.push_back(80);
-    reference.push_back(81);
-    reference.push_back(82);
-    reference.push_back(87);
-    reference.push_back(88);
-    reference.push_back(89);
-
-
-    lipraiser.push_back(glm::vec3(0.000000,    0.086957,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.065217,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.086957,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.050000,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.065217,    0.021739));
-    lipraiser.push_back(glm::vec3(0.000000,    0.020000,    0.000000));
-    lipraiser.push_back(glm::vec3(0.000000,    0.020000,    0.000000));
-
-    for(unsigned int i = 0; i < lipraiser.size(); ++i)
-    {
-
-     //   lipraiser[i].y /=100;
-
-    }
-
-    for(unsigned int i = 0; i < reference.size(); ++i)
-    {
-
-    vec_vertices[reference[i]].y -= lipraiser[i].y;
-
-    }
-
-}
-
-void FacemodelCandide::eyeCloser()
-{
-    std::vector<short> reference;
-    std::vector<glm::vec3> eyecloser;
-
-    reference.push_back(21 );
-    reference.push_back(22 );
-    reference.push_back(54 );
-    reference.push_back(55 );
-    reference.push_back(97 );
-    reference.push_back(98 );
-    reference.push_back(99 );
-    reference.push_back(100);
-    reference.push_back(105);
-    reference.push_back(106);
-    reference.push_back(107);
-    reference.push_back(108);
-
-
-
-
-    eyecloser.push_back(glm::vec3(0.000000   ,-0.062000    ,0.010000));
-    eyecloser.push_back(glm::vec3(0.000000   , 0.020000    ,0.010000));
-    eyecloser.push_back(glm::vec3(0.000000   ,-0.062000    ,0.010000));
-    eyecloser.push_back(glm::vec3(0.000000   , 0.020000    ,0.010000));
-    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
-    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
-    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
-    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
-    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
-    eyecloser.push_back(glm::vec3(0.000000   ,-0.045000    ,0.007000));
-    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
-    eyecloser.push_back(glm::vec3(0.000000   , 0.015000    ,0.007000));
-
-    for(unsigned int i = 0; i < eyecloser.size(); ++i)
-    {
-        eyecloser[i].x /= 10;
-        eyecloser[i].y /=10;
-
-    }
-
-    for(unsigned int i = 0; i < reference.size(); ++i)
-    {
-
-    vec_vertices[reference[i]].y += 0.01;
-
-    }
-
 }

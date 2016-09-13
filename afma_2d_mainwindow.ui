@@ -135,6 +135,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="psBtn_Override">
+       <property name="text">
+        <string>Override</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QComboBox" name="cb_AnimationList"/>
      </item>
      <item>

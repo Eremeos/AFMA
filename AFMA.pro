@@ -13,7 +13,6 @@ TEMPLATE = app
 CONFIG += debug
 
 SOURCES += main.cpp\
-        afma_mainwindow.cpp \
     afma_2d_mainwindow.cpp \
     openglwindow.cpp \
     facemodelcandide.cpp \
@@ -21,7 +20,7 @@ SOURCES += main.cpp\
     facecomponent.cpp \
     animationdialog.cpp
 
-HEADERS  += afma_mainwindow.h \
+HEADERS  += \
     afma_2d_mainwindow.h \
     openglwindow.h \
 	glm\vec3.hpp \
@@ -30,7 +29,7 @@ HEADERS  += afma_mainwindow.h \
     facecomponent.h \
     animationdialog.h
 
-FORMS    += afma_mainwindow.ui \
+FORMS    += \
     afma_2d_mainwindow.ui
 
 INCLUDEPATH += D:\\Programme\\opencv\\mybuild\\install\\include \

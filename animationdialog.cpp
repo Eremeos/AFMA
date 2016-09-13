@@ -42,12 +42,14 @@ AnimationDialog::AnimationDialog(std::vector<QString> &vec_faceComponent_name, s
     psb_accept = new QPushButton("Accept", this);
 
     psb_close  = new QPushButton("Close", this);
+    psb_show  = new QPushButton("Show", this);
     animationLayout->addWidget(psb_accept,vec_input_values->size()+1,0);
     animationLayout->addWidget(psb_close,vec_input_values->size()+1,1);
+    animationLayout->addWidget(psb_show,vec_input_values->size()+1,2);
     connect(psb_accept, SIGNAL(clicked()),this, SLOT(clickedAccept()));
     connect(psb_close, SIGNAL(clicked()),this, SLOT(clickedClose()));
 
-    animationLayout->addWidget(&debug,vec_input_values->size()+1,2);
+    animationLayout->addWidget(&debug,vec_input_values->size()+1,3);
 
 
 
@@ -58,6 +60,7 @@ void AnimationDialog::clickedClose()
 {
     this->close();
 }
+
 
 void AnimationDialog::clickedAccept()
 {
