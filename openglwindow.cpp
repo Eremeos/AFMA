@@ -55,6 +55,16 @@ void OpenGLWindow::initializeGL()
     VBOTexCords.create();
     VBOTexCords.bind();
 
+
+    glBegin(GL_QUADS);
+        // Front Face
+        glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);  // Bottom Left Of The Texture and Quad
+        glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, 1.0f);  // Bottom Right Of The Texture and Quad
+        glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, 1.0f);  // Top Right Of The Texture and Quad
+        glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, 1.0f);  // Top Left Of The Texture and Quad
+
+    glEnd();
+
     glGenBuffers(1, &VertexBufferId); // Buffer erzeugen
     glGenBuffers(1, &elementbuffer);
 
@@ -163,9 +173,15 @@ VBOColor.release();
 
     texture->bind();
 
+
 glPolygonMode(GL_FRONT, GL_TRIANGLES);
 
 glDrawElements(GL_TRIANGLES, 184*3, GL_UNSIGNED_SHORT, (void*)0);
+
+
+
+
+
 VBO.release();
 glDeleteBuffers(1,&elementbuffer);
     }

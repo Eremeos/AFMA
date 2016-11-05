@@ -130,9 +130,12 @@
      <item>
       <widget class="QPushButton" name="psBtn_SafeAnimation">
        <property name="text">
-        <string>Safe Animation</string>
+        <string>Save Animation</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cb_AnimationList"/>
      </item>
      <item>
       <widget class="QPushButton" name="psBtn_Override">
@@ -140,9 +143,6 @@
         <string>Override</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="cb_AnimationList"/>
      </item>
      <item>
       <widget class="QPushButton" name="psBtn_RemoveAnimation">

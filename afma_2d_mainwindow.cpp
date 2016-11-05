@@ -2,9 +2,6 @@
 #include "ui_afma_2d_mainwindow.h"
 #include <algorithm>
 #include <QFileDialog>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/core/core.hpp>
 #include <QPointF>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
@@ -395,7 +392,9 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
 
         if(ui->annotationWidget->vec_vertices.size() == ui->openGLWidget->model.vec_vertices.size())
         {
+
             on_psBtn_GenerateModel_clicked();
+            ui->openGLWidget->line = true;
         }
 }
 
@@ -490,6 +489,7 @@ void AFMA_2D_MainWindow::on_psBtn_SetAnimation_clicked()
     timer.stop();
     int i = ui->cb_FaceComponents->currentIndex();
     dia = new AnimationDialog(ui->openGLWidget->model.vec_faceComponents[i].vec_name, ui->openGLWidget->model.vec_faceComponents[i].vec_vertices, ui->openGLWidget->model.vec_faceComponents[i].vec_moved);
+    dia->setWindowTitle(ui->openGLWidget->model.vec_faceComponents[i].name);
     connect(dia->psb_accept, SIGNAL(clicked(bool)), this, SLOT(updateModel()));
     connect(dia->psb_show, SIGNAL(clicked(bool)), this, SLOT(showModel()));
     dia->exec();
@@ -514,7 +514,7 @@ void AFMA_2D_MainWindow::on_psBtn_SafeAnimation_clicked()
 {
     timer.stop();
     bool ok;
-    QString newAnimationName = QInputDialog::getText(this, tr("QInputDialog::getText()"),tr("Please enter a name for the animation:"),QLineEdit::Normal,"",&ok);
+    QString newAnimationName = QInputDialog::getText(this, tr("Safe Animation"),tr("Please enter a name for the animation:"),QLineEdit::Normal,"",&ok);
     if(ok == true)
     {
         ui->cb_AnimationList->addItem(newAnimationName);

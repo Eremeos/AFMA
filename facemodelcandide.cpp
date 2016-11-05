@@ -574,14 +574,14 @@ void FacemodelCandide::initializeFaceComponents()
     vec_faceComponents.push_back(lips);
 
 
-    FaceComponent checks;
-    checks.name = "checks";
-    checks.vec_reference_point.push_back(90);
-    checks.vec_reference_point.push_back(91);
-    checks.vec_reference_point.push_back(27);
-    checks.vec_reference_point.push_back(60);
+    FaceComponent cheeks;
+    cheeks.name = "cheeks";
+    cheeks.vec_reference_point.push_back(90);
+    cheeks.vec_reference_point.push_back(91);
+    cheeks.vec_reference_point.push_back(27);
+    cheeks.vec_reference_point.push_back(60);
 
-    vec_faceComponents.push_back(checks);
+    vec_faceComponents.push_back(cheeks);
 
 
     FaceComponent nose;
