@@ -7,11 +7,12 @@
 
 AnimationDialog::AnimationDialog(std::vector<QString> &vec_faceComponent_name, std::vector<glm::vec3> &vec_faceComponent_values,std::vector<glm::vec3> &vec_outputFaceComponent_values)
 {
+    //Eingabewerte des Annotationsmodell, Punktnamen und Ausgabewerte des generierten Animationsmodells
     vec_input_values = &vec_faceComponent_values;
     vec_output_values = &vec_outputFaceComponent_values;
     vec_input_name = &vec_faceComponent_name;
 
-
+    //Dynamische Generierung des Dialogs
     animationLayout = new QGridLayout(this);
     for(int i = 0; i < vec_input_values->size(); ++i)
     {
@@ -64,6 +65,7 @@ void AnimationDialog::clickedClose()
 
 void AnimationDialog::clickedAccept()
 {
+    //Überschreiben der Ausgabewerte
     list = this->findChildren<QDoubleSpinBox*>();
     vec_output_values->clear();
 

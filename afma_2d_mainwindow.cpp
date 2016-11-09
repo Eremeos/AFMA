@@ -31,9 +31,9 @@ AFMA_2D_MainWindow::~AFMA_2D_MainWindow()
     delete ui;
 }
 
+//aktualisieren des Modells
 void AFMA_2D_MainWindow::updateModel()
 {
-  //  int i = ui->cb_FaceComponents->currentIndex();
     for(unsigned int i = 0; i < ui->openGLWidget->model.vec_faceComponents.size(); ++i)
     {
     for(unsigned int j = 0; j < ui->openGLWidget->model.vec_faceComponents[i].vec_moved.size(); ++j)
@@ -46,6 +46,7 @@ void AFMA_2D_MainWindow::updateModel()
     this->update();
 }
 
+//Wechsel zwischen Animations- und Annotationsmodell
 void AFMA_2D_MainWindow::showModel()
 {
     if(show == false)
@@ -75,6 +76,7 @@ void AFMA_2D_MainWindow::showModel()
     this->update();
 }
 
+//Fügt die Annotation aus dem geladen File hinzu
 void AFMA_2D_MainWindow::drawAnnotation(std::vector<glm::vec3> pts)
 {
    // double rad = 1;
@@ -85,6 +87,7 @@ void AFMA_2D_MainWindow::drawAnnotation(std::vector<glm::vec3> pts)
     }
 }
 
+//Erzeugt eine Ausgabe im Debuglabel
 void AFMA_2D_MainWindow::debugMessage(QString str)
 {
     ui->lbl_Debug->setText(str);
@@ -92,13 +95,14 @@ void AFMA_2D_MainWindow::debugMessage(QString str)
 
 
 
-
+//Löscht die komplette Annotation aus der GUI
 void AFMA_2D_MainWindow::clearAnnotation()
 {
     ui->annotationWidget->vec_vertices.clear();
     ui->annotationWidget->update();
 }
 
+//Animationsmodell wird überschrieben
 void AFMA_2D_MainWindow::updateAnimation()
 {
     if(animationList.size() > 0)
@@ -125,7 +129,7 @@ void AFMA_2D_MainWindow::updateAnimation()
 }
 
 
-
+//Läd ein neues Referenzbild
 void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
 {
     timer.stop();
@@ -151,7 +155,7 @@ void AFMA_2D_MainWindow::on_psBtn_Load_clicked()
 }
 
 
-
+//Speichert das aktuelle Projekt
 void AFMA_2D_MainWindow::on_psBtn_SaveAnnotation_clicked()
 {
 
@@ -216,6 +220,7 @@ void AFMA_2D_MainWindow::on_psBtn_SaveAnnotation_clicked()
 
 }
 
+//Lädt ein komplettes Objekt
 void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
 {
         timer.stop();
@@ -398,6 +403,7 @@ void AFMA_2D_MainWindow::on_psBtn_LoadProject_clicked()
         }
 }
 
+//Löscht Annotation aus dem Speicher
 void AFMA_2D_MainWindow::on_psBtn_ClearAnnotation_clicked()
 {
     timer.stop();
@@ -408,7 +414,7 @@ void AFMA_2D_MainWindow::on_psBtn_ClearAnnotation_clicked()
 
 }
 
-
+//Macht letzten Annotationspunkt rückgängig
 void AFMA_2D_MainWindow::on_psBtn_UndoLastPoint_clicked()
 {
     timer.stop();
@@ -428,7 +434,7 @@ void AFMA_2D_MainWindow::on_psBtn_UndoLastPoint_clicked()
 }
 
 
-
+//Wechsel zwischen Gittermodell und texturierten Modell
 void AFMA_2D_MainWindow::on_psBtn_GenerateModel_clicked()
 {
     timer.stop();
@@ -469,6 +475,7 @@ void AFMA_2D_MainWindow::on_psBtn_GenerateModel_clicked()
     ui->openGLWidget->model.setFaceComponents();
 }
 
+//Öffnet den AnnotationHelper
 void AFMA_2D_MainWindow::on_psBtn_AnnotationHelp_clicked()
 {
 
@@ -484,6 +491,7 @@ void AFMA_2D_MainWindow::on_psBtn_AnnotationHelp_clicked()
         mb->show();
 }
 
+//Hinzufügen einer neuen Animation
 void AFMA_2D_MainWindow::on_psBtn_SetAnimation_clicked()
 {
     timer.stop();
@@ -496,6 +504,7 @@ void AFMA_2D_MainWindow::on_psBtn_SetAnimation_clicked()
 
 }
 
+//Startet Animation
 void AFMA_2D_MainWindow::on_psBtn_StartAnimation_clicked()
 {
     if(timer.isActive())
@@ -510,6 +519,7 @@ void AFMA_2D_MainWindow::on_psBtn_StartAnimation_clicked()
     }
 }
 
+//Speichert die Animation
 void AFMA_2D_MainWindow::on_psBtn_SafeAnimation_clicked()
 {
     timer.stop();
@@ -524,6 +534,7 @@ void AFMA_2D_MainWindow::on_psBtn_SafeAnimation_clicked()
 
 }
 
+//Verändert Animationsgeschwindigkeit
 void AFMA_2D_MainWindow::on_sld_Time_valueChanged(int value)
 {
     timeframe = value;
@@ -534,6 +545,7 @@ void AFMA_2D_MainWindow::on_sld_Time_valueChanged(int value)
     ui->openGLWidget->update();
 }
 
+//Löscht ausgewählte Animation
 void AFMA_2D_MainWindow::on_psBtn_RemoveAnimation_clicked()
 {
     timer.stop();
@@ -546,6 +558,7 @@ void AFMA_2D_MainWindow::on_psBtn_RemoveAnimation_clicked()
     }
 }
 
+//Überschreibt ausgewählte Animation
 void AFMA_2D_MainWindow::on_psBtn_Override_clicked()
 {
     int i =  ui->cb_AnimationList->currentIndex();

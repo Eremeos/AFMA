@@ -16,12 +16,12 @@
 
 
 
-
+//Fenster für die Annotation des Referenzbildes
 OpenGLAnnotationWindow::OpenGLAnnotationWindow(QWidget *parent) : QOpenGLWidget(parent)
 {
 
 }
-
+//Erzeugung eines Annotationspunktes bei Mausklick auf das Bild
 void OpenGLAnnotationWindow::mousePressEvent(QMouseEvent *e)
 {
     if(vec_vertices.size() < ogl->model.vec_vertices.size())
@@ -44,7 +44,7 @@ void OpenGLAnnotationWindow::mousePressEvent(QMouseEvent *e)
     }
 }
 
-
+//Initialisierung der GL-Funktionen
 void OpenGLAnnotationWindow::initializeGL()
 {
 
@@ -93,7 +93,7 @@ void OpenGLAnnotationWindow::initializeGL()
 
 
 }
-
+//Zeichnet das Referenzbild und die Annotationspunkte
 void OpenGLAnnotationWindow::paintGL()
 {
         if(filepath != NULL)
@@ -178,7 +178,7 @@ ogl->draw();
         }
 }
 
-
+//Anpassung des Widgets an der Bildschirmauflösung
 void OpenGLAnnotationWindow::resizeGL(int w, int h)
 {
    glViewport(0, 0, w, h);

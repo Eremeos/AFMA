@@ -12,13 +12,13 @@
 
 
 
-
+//Anzeigefenster für das 3D Gesicht
 OpenGLWindow::OpenGLWindow(QWidget *parent) : QOpenGLWidget(parent)
 {
  start = true;
 
 }
-
+//Intialisiere die GL Funktionen
 void OpenGLWindow::initializeGL()
 {
     initializeOpenGLFunctions();
@@ -69,7 +69,7 @@ void OpenGLWindow::initializeGL()
     glGenBuffers(1, &elementbuffer);
 
 }
-
+//Zeichenfunktion
 void OpenGLWindow::paintGL()
 {
     if(bdraw ==true && line == false)
@@ -195,18 +195,18 @@ glDeleteBuffers(1,&elementbuffer);
 
 
 }
-
+//Anpassung des Fensters anhand der Bildschirmauflösung
 void OpenGLWindow::resizeGL(int w, int h)
 {
    glViewport(0, 0, w, h);
 }
-
+//Zeichnet das Gesicht sobald diese Funktion aufgerufen wurde
 void OpenGLWindow::draw()
 {
  bdraw = true;
  update();
 }
-
+//Springt zum nächsten Annotationspunkt
 void OpenGLWindow::next()
 {
 
@@ -228,7 +228,7 @@ else
     update();
 }
 }
-
+//Macht Annotation rückgängig
 void OpenGLWindow::undoAnnotation()
 {
     count = 0;

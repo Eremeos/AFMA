@@ -13,6 +13,7 @@ initializeDoubledPoints();
 initializeFaceComponents();
 }
 
+//Vertices des Gesichtsmodells
 void FacemodelCandide::initializeVertices()
 {
     vec_vertices.push_back(glm::vec3(0.000000f    ,1.061000f    ,-0.371000f  ));
@@ -143,7 +144,7 @@ void FacemodelCandide::initializeVertices()
 
 
 }
-
+//Farbe jedes Punkes im Gesichtsmodell
 void FacemodelCandide::initializeColor()
 {
     vec_color.push_back(glm::vec4(1,0,0,0.3f));
@@ -153,7 +154,7 @@ void FacemodelCandide::initializeColor()
        vec_color_base.push_back(glm::vec4(1,1,1,0.3f));
    }
 }
-
+//Indexierung der Flächen
 void FacemodelCandide::initializeIndices()
 {
     vec_indices.push_back(glm::vec3(0   ,11  ,1  ));
@@ -349,7 +350,7 @@ void FacemodelCandide::initializeIndices()
     }
 
 }
-
+//Annotationstext für den AnnotationHelper
 void FacemodelCandide::initializeAnnotationText()
 {
     vec_annotationText.push_back("Top of skull");
@@ -466,7 +467,7 @@ void FacemodelCandide::initializeAnnotationText()
     vec_annotationText.push_back("Bottom left edge of nose");
     vec_annotationText.push_back("Bottom right edge of nose");
 }
-
+//Doppelt auftretende Punkte
 void FacemodelCandide::initializeDoubledPoints()
 {
     vec_doubled_points.push_back(glm::vec2(35,2));
@@ -479,7 +480,7 @@ void FacemodelCandide::initializeDoubledPoints()
     vec_doubled_points.push_back(glm::vec2(43,10));
 
 }
-
+//Gesichtsbestandteile
 void FacemodelCandide::initializeFaceComponents()
 {
     FaceComponent Eyebrows;
@@ -618,7 +619,7 @@ void FacemodelCandide::initializeFaceComponents()
 
 
 }
-
+//Zuordnung der Punkte zum Gesichtsbereich
 void FacemodelCandide::setFaceComponents()
 {
 
